@@ -1,0 +1,20 @@
+<div class="container mt-4">
+	{{ form_start(form) }}
+	<div class="row">
+
+		{{ form_row(form.username, {'label': 'Pseudo'}) }}
+
+		{{ form_row(form.firstname, {'label': 'Prenom'}) }}
+
+		{{ form_row(form.lastname, {'label': 'Nom'}) }}
+
+		{{ form_row(form.phone, {'label': 'Telephone'}) }}
+
+		{{ form_row(form.email, {'label': 'Email'}) }}
+
+		{{ form_row(form.password, {'label': 'Mot de passe', 'type' : 'password'}) }}
+
+		<button class="btn btn-primary">{{button | default('Enregistrer')}}</button>
+	</div>
+	{{ form_end(form) }}
+</div>
