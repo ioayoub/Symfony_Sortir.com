@@ -78,6 +78,7 @@ class UserController extends AbstractController
     {
 
         $user = $this->repo->find($id);
+        $role = $user->getRoles();
 
         if ($id != $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_');
@@ -103,10 +104,11 @@ class UserController extends AbstractController
             ]);
         }
 
-        return $this->render('user/register.html.twig', [
+        return $this->render('user/edit.html.twig', [
             'controller_name' => 'UserController',
             'form' => $form->createView(),
-            'id' => $user->getId()
+            'id' => $user->getId(),
+            'role' => $role
         ]);
     }
 
@@ -116,15 +118,20 @@ class UserController extends AbstractController
     public function delete($id, Request $request): Response
     {
         $user = $this->repo->find($id);
-        if ($id != $this->getUser()->getId()) {
+
+        if ($id != $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_');
-        }
-        $form = $this->createForm(UserRegisterType::class, $user);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        } elseif ($this->isCsrfTokenValid('delete' . $user->getid(), $request->get('_token'))) {
+
             $this->em->remove($user);
             $this->em->flush();
             $this->addFlash('success', 'Votre profil a été supprimé.');
+        }
+
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_user');
+        } else {
+            return $this->redirectToRoute('home_');
         }
     }
 }
