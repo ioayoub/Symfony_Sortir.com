@@ -79,7 +79,7 @@ class UserController extends AbstractController
 
         $user = $this->repo->find($id);
 
-        if ($id != $this->getUser()->getId()) {
+        if ($id != $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_');
         }
 
@@ -100,9 +100,6 @@ class UserController extends AbstractController
                 'id' => $user->getId(),
                 'user' => $user,
                 'form' => $form->createView(),
-
-
-
             ]);
         }
 
@@ -111,5 +108,23 @@ class UserController extends AbstractController
             'form' => $form->createView(),
             'id' => $user->getId()
         ]);
+    }
+
+    /**
+     * @Route("/user/delete/{id}", name="user_delete", methods={"GET", "POST"})
+     */
+    public function delete($id, Request $request): Response
+    {
+        $user = $this->repo->find($id);
+        if ($id != $this->getUser()->getId()) {
+            return $this->redirectToRoute('home_');
+        }
+        $form = $this->createForm(UserRegisterType::class, $user);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->em->remove($user);
+            $this->em->flush();
+            $this->addFlash('success', 'Votre profil a été supprimé.');
+        }
     }
 }

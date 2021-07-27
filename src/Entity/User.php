@@ -11,8 +11,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(
- *  fields={"username", "email"})
+ * @UniqueEntity("username",message="Ce pseudo est déjà utilisée.")
+ * @UniqueEntity("email",message="Cet email est déjà utilisé.")
+ *  @UniqueEntity("phone",message="Ce numéro de téléphone est déjà utilisé.")
  */
 class User implements UserInterface, \Serializable
 {
@@ -27,25 +28,25 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex(pattern="#^[a-zA-Z]{2,}$#", message="Username must be at least 3 characters long and contain only letters")
+     * @Assert\Regex(pattern="#^[a-zA-Z]{2,}$#", message="Le pseudo doit contenir au moins 3 caractères")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex(pattern="#[a-zA-Z]{2,}#")
+     * @Assert\Regex(pattern="#[a-zA-Z]{2,}#", message="Le prénom doit contenir au moins 2 caractères")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex(pattern="#[a-zA-Z]{2,}#")
+     * @Assert\Regex(pattern="#[a-zA-Z]{2,}#", message="Le nom doit contenir au moins 2 caractères")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Regex(pattern="#[0-9]{10}#")
+     * @Assert\Regex(pattern="#[0-9]{10}#", message="le numéro de téléphone doit contenir 10 chiffres")
      */
     private $phone;
 
