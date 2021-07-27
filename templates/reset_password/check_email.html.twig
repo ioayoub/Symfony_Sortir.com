@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Formulaire réinitialisation'%}
+
+{% block body %}
+	<div class="container mt-4" style="text-align:center;">
+		<p>
+			Si votre l'adresse email correspond à une adresse existante, alors un email vous a été envoyé afin que vous puissiez réinitialiser votre mot de passe.
+																											                    Ce lien expirera dans
+			{{ resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') }}.
+		</p>
+		<p>Si vous ne recevez pas cet email, veuillez vérifier votre dossier spam ou
+			<a href="{{ path('app_forgot_password_request') }}">réessayer</a>.</p>
+	</div>
+{% endblock %}

@@ -11,9 +11,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity("username")
+ * @UniqueEntity(
+ *  fields={"username", "email"})
  */
-class User implements UserInterface
+class User implements UserInterface, \Serializable
 {
 
 
@@ -196,5 +197,35 @@ class User implements UserInterface
 
 
         return $this;
+    }
+
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->username,
+            $this->firstname,
+            $this->lastname,
+            $this->phone,
+            $this->email,
+            $this->password,
+            $this->roles,
+            $this->isActive,
+        ]);
+    }
+
+    public function unserialize($serialized)
+    {
+        list(
+            $this->id,
+            $this->username,
+            $this->firstname,
+            $this->lastname,
+            $this->phone,
+            $this->email,
+            $this->password,
+            $this->roles,
+            $this->isActive,
+        ) = unserialize($serialized);
     }
 }

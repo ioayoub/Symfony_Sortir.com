@@ -38,7 +38,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/user/register", name="user_register")
+     * @Route("/register", name="user_register")
      */
     public function register(Request $request, UserPasswordHasherInterface $hash): Response
     {
@@ -54,9 +54,10 @@ class UserController extends AbstractController
 
             $this->em->persist($user);
             $this->em->flush();
+            $this->addFlash('success', 'Vous êtes désormais inscrit.');
 
 
-            return $this->redirectToRoute('user_register', [
+            return $this->redirectToRoute('home_', [
                 'user' => $user,
                 'form' => $form->createView()
 
@@ -71,22 +72,35 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/user/edit", name="user_edit")
+     * @Route("/user/edit/{id}", name="user_edit", methods={"GET", "POST"})
      */
-    public function edit(User $user, Request $request): Response
+    public function edit($id, Request $request, UserPasswordHasherInterface $hash): Response
     {
 
+        $user = $this->repo->find($id);
+
+        if ($id != $this->getUser()->getId()) {
+            return $this->redirectToRoute('home_');
+        }
+
         $form = $this->createForm(UserRegisterType::class, $user);
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $hasher = $hash->hashPassword($user, $user->getPassword());
+            $user->setPassword($hasher);
+
+            $this->em->persist($user);
             $this->em->flush();
+            $this->addFlash('success', 'Votre profil a été mis à jour.');
 
-
-            return $this->redirectToRoute('user_edit', [
+            return $this->redirectToRoute('home_', [
                 'id' => $user->getId(),
                 'user' => $user,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+
 
 
             ]);

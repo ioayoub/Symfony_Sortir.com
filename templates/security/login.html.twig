@@ -16,6 +16,7 @@
 				<a href="{{ path('app_logout') }}">Logout</a>
 			</div>
 		{% endif %}
+
 		<div class="container mt-4">
 			<h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
 			<label for="inputUsername">Pseudo</label>
@@ -24,15 +25,16 @@
 			<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
 
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+			<div class="row mt-4">
+				<a href="{{path('app_forgot_password_request')}}">
+					Vous avez oublié votre mot de passe?</a>
+			</div>
 
-
-			See https://symfony.com/doc/current/security/remember_me.html
-
-			<div class="checkbox mb-3">
+			<div class="checkbox mb-3 mt-2">
 				<label>
 					<input type="checkbox" name="_remember_me">Se souvenir de moi</label>
 			</div>
-			<button class="btn btn-lg btn-primary" type="submit">Connexion</button>
+			<button class="btn btn-primary" type="submit">Connexion</button>
 		</form>
 	</div>
 {% endblock %}

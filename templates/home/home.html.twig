@@ -5,8 +5,19 @@
 {% block body %}
 
 	<div class="container mt-4">
-		<img src="{{asset('./images/home/nature-banner.jpg')}}" style="width:100%; heigth : auto;"/>
-		<div class="jumbotron mt-4"></div>
-
+		{% if app.user %}
+			<p style="text-align:center;">
+				Bienvenue
+				<b>{{ user.username }}</b>
+			</p>
+		{% endif %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success" style="text-align : center;">
+				{{message}}
+			</div>
+		{% endfor %}
 	</div>
+	<img src="{{asset('./images/home/nature-banner.jpg')}}" style="width:100%; heigth : auto;"/>
+	<div class="jumbotron mt-4"></div>
+
 {% endblock %}
