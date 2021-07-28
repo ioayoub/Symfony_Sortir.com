@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gestion campus' %}
+
+{% block body %}
+	<div class="container mt-4" style="text-align:center;">
+		<h1>Gérer les campus</h1>
+		<table class="table table-striped mt-4">
+			<thead>
+				<th>Campus</th>
+				<th>Action</th>
+			</thead>
+
+			{% for campus in campus %}
+				<tbody>
+					<tr>
+						<td>
+							{{campus.name}}
+						</td>
+						<td>
+							<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter</a>
+							<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
+							<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
+						</td>
+					</tr>
+					<tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	{% endblock %}

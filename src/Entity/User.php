@@ -107,6 +107,11 @@ class User implements UserInterface, \Serializable
      */
     private $updated_at;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="user_campus")
+     */
+    private $campus;
+
 
     public function __construct()
     {
@@ -335,6 +340,18 @@ class User implements UserInterface, \Serializable
     public function setimageSize($imageSize): self
     {
         $this->imageSize = $imageSize;
+
+        return $this;
+    }
+
+    public function getCampus(): ?campus
+    {
+        return $this->campus;
+    }
+
+    public function setCampus(?campus $campus): self
+    {
+        $this->campus = $campus;
 
         return $this;
     }

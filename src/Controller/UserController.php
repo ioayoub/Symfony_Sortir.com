@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Campus;
 use App\Entity\User;
 use App\Form\UserRegisterType;
+use App\Repository\CampusRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,10 +18,11 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class UserController extends AbstractController
 {
-    public function __construct(EntityManagerInterface $em, UserRepository $repo)
+    public function __construct(EntityManagerInterface $em, UserRepository $repo, CampusRepository $campusRepo)
     {
         $this->em = $em;
         $this->repo = $repo;
+        $this->campusRepo = $campusRepo;
     }
 
     /**
@@ -43,11 +46,13 @@ class UserController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $hash): Response
     {
         $user = new User();
-
+        $campus = $this->campusRepo->findAll();
+        dump($campus);
         $form = $this->createForm(UserRegisterType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
 
             $hasher = $hash->hashPassword($user, $user->getPassword());
             $user->setPassword($hasher);
@@ -59,7 +64,8 @@ class UserController extends AbstractController
 
             return $this->redirectToRoute('home_', [
                 'user' => $user,
-                'form' => $form->createView()
+                'form' => $form->createView(),
+                'campus' => $campus
 
             ]);
         }
@@ -78,6 +84,8 @@ class UserController extends AbstractController
     {
 
         $user = $this->repo->find($id);
+
+
 
         if ($id != $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_');

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Gestion campus' %}
+
+{% block body %}
+	<div class="container mt-4" style="text-align:center;">
+		<h1>Gérer les campus</h1>
+		<table class="table table-striped mt-4">
+			<thead>
+				<th>Campus</th>
+				<th>Action</th>
+			</thead>
+
+			{% for campus in campus %}
+				<tbody>
+					<tr>
+						<td>
+							{{campus.name}}
+						</td>
+						<td>
+							<a href="#" class="btn btn-primary">Ajouter</a>
+							<a href="#" class="btn btn-danger">Supprimer</a>
+						</td>
+					</tr>
+				{% endfor %}
+				<tr>
+
+
+					{{ form_start(form) }}
+					<td>
+						{{ form_row(form.name) }}
+					</td>
+
+					<td>
+						<button class="btn-primary">Ajouter</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		{{ form_end(form) }}
+
+
+	</div>
+{% endblock %}
