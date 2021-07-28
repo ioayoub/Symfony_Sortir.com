@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Mon profil'%}
+
+{% block body %}
+	<div class="container">
+		<div class="row justify-content-center mt-4">
+			<div class="col" style="justify-content : center">
+				<div style="text-align:center;">
+					{% if app.user %}
+						{% if user.imageName %}
+							<img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="" style="width: 200px; height: 200px; border-radius : 50%"/>
+						{% else %}
+							<img src="/images/users_profile/61013938ab4c0739080988.jpg" alt="Empty profile picture" style="width: 200px; height: 200px; border-radius : 50%"/>
+						{% endif %}
+					{% endif %}
+				</div>
+
+				<h2 style="text-align:center;">
+					{{ user.username }}
+				</h2>
+				<table class="table table-striped mt-4" style="text-align:center;">
+					<tr>
+						<td>
+							<label for="firstname">
+								Prenom :
+							</label>
+						</td>
+						<td class="">
+							{{user.lastname}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="lastname">
+								Nom :
+							</label>
+						</td>
+						<td>
+							{{user.firstname}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="phone">
+								Telephone :
+							</label>
+						</td>
+						<td>
+							{{user.phone}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="email">
+								Email :
+							</label>
+						</td>
+						<td class="">
+							{{user.email}}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label for="campus">
+								Campus :
+							</label>
+						</td>
+						<td class=""></td>
+					</tr>
+				</table>
+				<div class="row">
+					<a href=" {{path('home_')}} " class="btn btn-lg btn-primary">Retour à l'accueil</a>
+				</div>
+			</div>
+		{% endblock %}

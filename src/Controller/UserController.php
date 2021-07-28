@@ -78,7 +78,6 @@ class UserController extends AbstractController
     {
 
         $user = $this->repo->find($id);
-        $role = $user->getRoles();
 
         if ($id != $this->getUser()->getId() && !$this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('home_');
@@ -108,7 +107,6 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
             'form' => $form->createView(),
             'id' => $user->getId(),
-            'role' => $role,
             'user' => $user
         ]);
     }
@@ -134,5 +132,19 @@ class UserController extends AbstractController
         } else {
             return $this->redirectToRoute('home_');
         }
+    }
+
+    /**
+     * @Route("/user/{id}", name="user_show")
+     */
+
+    public function show(int $id)
+    {
+        $user = $this->repo->find($id);
+
+        return $this->render('user/show.html.twig', [
+            'id' => $id,
+            'user' => $user
+        ]);
     }
 }
