@@ -108,7 +108,8 @@ class UserController extends AbstractController
             'controller_name' => 'UserController',
             'form' => $form->createView(),
             'id' => $user->getId(),
-            'role' => $role
+            'role' => $role,
+            'user' => $user
         ]);
     }
 

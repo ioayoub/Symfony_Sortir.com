@@ -1,23 +1,31 @@
 <div class="container mt-4">
 
 	{{ form_start(form) }}
-	<div class="row">
+	<div class="row justify-content-center">
+		<div class="col" style="justify-content : center">
+			<div style="text-align:center;">
+				{% if app.user %}
+					{% if user.imageName  %}
+						<img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="" style="width: 200px; height: 200px; border-radius : 50%"/>
+					{% else %}
+						<img src="/images/users_profile/61013938ab4c0739080988.jpg" alt="Empty profile picture" style="width: 200px; height: 200px; border-radius : 50%"/>
+					{% endif %}
+				{% endif %}
+			</div>
 
-		{{ form_row(form.username, {'label': 'Pseudo'}) }}
+			{{ form_row(form.username, {'label': 'Pseudo'}) }}
 
-		{{ form_row(form.firstname, {'label': 'Prenom'}) }}
+			{{ form_row(form.firstname, {'label': 'Prenom'}) }}
 
-		{{ form_row(form.lastname, {'label': 'Nom'}) }}
+			{{ form_row(form.lastname, {'label': 'Nom'}) }}
 
-		{{ form_row(form.phone, {'label': 'Telephone'}) }}
+			{{ form_row(form.password, {'label': 'Mot de passe', 'type' : 'password'}) }}
+			{{ form_row(form.phone, {'label': 'Telephone'}) }}
 
-		{{ form_row(form.email, {'label': 'Email'}) }}
+			{{ form_row(form.email, {'label': 'Email'}) }}
 
-		{{ form_row(form.password, {'label': 'Mot de passe', 'type' : 'password'}) }}
-
-
-		<button class="btn btn-primary">{{button | default('Enregistrer')}}</button>
+			{{ form_row(form.imageFile, {'label': 'Upload'}) }}
+			<button class="btn btn-primary">{{button | default('Enregistrer')}}</button>
+		</div>
 	</div>
-	{{ form_end(form) }}
-
-</div>
+	{{ form_end(form) }}</div>

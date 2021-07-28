@@ -4,18 +4,22 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use Vich\UploaderBundle\Mapping\Annotation\Uploadable as Vich;
-use Vich\UploaderBundle\Mapping\Annotation\Uploadable;
-use Symfony\Component\Security\Core\User\UserInterface;
+
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Vich\UploaderBundle\Entity\File as EmbeddedFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
+
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity
  * @Vich\Uploadable
  * @UniqueEntity("username",message="Ce pseudo est déjà utilisée.")
  * @UniqueEntity("email",message="Cet email est déjà utilisé.")
+ * 
  */
 
 class User implements UserInterface, \Serializable
@@ -78,18 +82,21 @@ class User implements UserInterface, \Serializable
     private $isActive = false;
 
     /**
+     * @var File|null
      * @Assert\Image(mimeTypes="image/jpeg", maxSize="6000000")
-     * @Vich\UploadableField(mapping="product_image", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="users_image", fileNameProperty="imageName", size="imageSize")
      */
     private $imageFile;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @var string|null
      */
     private $imageName;
 
     /**
      * @ORM\Column(type="integer")
+     * @var int|null
      */
     private $imageSize;
 
@@ -98,7 +105,13 @@ class User implements UserInterface, \Serializable
      *
      * @var \DateTimeInterface|null
      */
-    private $updatedAt;
+    private $updated_at;
+
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
 
 
     public function getId(): ?int
@@ -257,47 +270,72 @@ class User implements UserInterface, \Serializable
         ) = unserialize($serialized);
     }
     /**
-     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
-     * of 'UploadedFile' is injected into this setter to trigger the update. If this
-     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
-     * must be able to accept an instance of 'File' as the bundle will inject one here
-     * during Doctrine hydration.
-     *
-     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $imageFile
+     * Get the value of imageName
      */
-    public function setImageFile(?File $imageFile = null): void
+    public function getimageName(): ?string
     {
-        $this->imageFile = $imageFile;
-
-        if (null !== $imageFile) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
-        }
+        return $this->imageName;
     }
 
+    /**
+     * Set the value of imageName
+     */
+    public function setimageName(?string $imageName): User
+    {
+        $this->imageName = $imageName;
+
+        return $this;
+    }
+
+    /** 
+     * Get the value of imageFile
+     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    public function setImageName(?string $imageName): void
+    /**
+     * Set the value of imageFile
+     */
+    public function setImageFile(File $imageFile)
     {
-        $this->imageName = $imageName;
+        $this->imageFile = $imageFile;
+
+        if ($this->imageFile instanceof UploadedFile) {
+            $this->updated_at = new \DateTime('now');
+        }
+
+        return $this;
     }
 
-    public function getImageName(): ?string
+    public function getUpdatedAt(): ?\DateTimeInterface
     {
-        return $this->imageName;
+        return $this->updated_at;
     }
 
-    public function setImageSize(?int $imageSize): void
+    public function setUpdatedAt(\DateTimeInterface $updated_at): self
     {
-        $this->imageSize = $imageSize;
+        $this->updated_at = $updated_at;
+
+        return $this;
     }
 
-    public function getImageSize(): ?int
+    /**
+     * Get the value of imageSize
+     */
+    public function getimageSize()
     {
         return $this->imageSize;
+    }
+
+    /**
+     * Set the value of imageSize
+     */
+    public function setimageSize($imageSize): self
+    {
+        $this->imageSize = $imageSize;
+
+        return $this;
     }
 }
