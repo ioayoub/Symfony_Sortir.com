@@ -47,7 +47,7 @@ class UserController extends AbstractController
     {
         $user = new User();
         $campus = $this->campusRepo->findAll();
-        dump($campus);
+
         $form = $this->createForm(UserRegisterType::class, $user);
         $form->handleRequest($request);
 
@@ -56,6 +56,12 @@ class UserController extends AbstractController
 
             $hasher = $hash->hashPassword($user, $user->getPassword());
             $user->setPassword($hasher);
+
+            if ($user->getimageName() == null) {
+                $user->setimageName("default.jpg");
+                $user->setimageSize(0);
+                $user->setUpdatedAt(new \DateTime());
+            }
 
             $this->em->persist($user);
             $this->em->flush();
@@ -149,6 +155,12 @@ class UserController extends AbstractController
     public function show(int $id)
     {
         $user = $this->repo->find($id);
+
+        if (!$user) {
+            return $this->render('errors/userNotFound.html.twig');
+        }
+
+        dump($user);
 
         return $this->render('user/show.html.twig', [
             'id' => $id,

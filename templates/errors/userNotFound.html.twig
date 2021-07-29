@@ -1,0 +1,13 @@
+{# templates/bundles/TwigBundle/Exception/error404.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="container " style="text-align:center;">
+		<h1>L'utilisateur n'existe pas.</h1>
+
+		<p class="mt-4">
+			L'utilisateur que vous avez demandé n'existe pas ou plus. Veuillez vérifier votre saisie ou revenir à la
+			<a href="{{ path('home_') }}">page d'accueil</a>.
+		</p>
+	</div>
+{% endblock %}

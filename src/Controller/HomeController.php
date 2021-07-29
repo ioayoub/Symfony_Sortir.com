@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Repository\TripsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,14 +23,17 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home_")
      */
-    public function index(): Response
+    public function index(TripsRepository $tripRepo): Response
     {
 
         $user = $this->getUser();
-        dump($user);
+        $trips = $tripRepo->findAll();
+
+        dump($trips);
 
         return $this->render('home/home.html.twig', [
             'user' => $user,
+            'trips' => $trips
 
         ]);
     }

@@ -4,27 +4,161 @@
 
 {% block body %}
 
-	<div class="container mt-4">
-		{% if app.user %}
-			<p style="text-align:center;">
-				Bienvenue
-				<b>{{ user.username }}</b>
+	<div class="container">
+		<img src="/images/home/nature-banner.jpg" alt="" style="width:100%;display:block; margin:auto;">
 
-				{% if user.imageName  %}
-					<img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="" style="width: 200px; height: 200px; border-radius : 50%"/>
-				{% else %}
-					<img src="/images/users_profile/61013938ab4c0739080988.jpg" alt="Empty profile picture" style="width: 200px; height: 200px; border-radius : 50%"/>
+		<div class="jumbotron mt-4">
 
-				{% endif %}
-			</p>
-		{% endif %}
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success" style="text-align : center;">
-				{{message}}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success" style="text-align : center;">
+					{{message}}
+				</div>
+			{% endfor %}
+
+			<h3>Filter les sorties</h3>
+			<div class="dateAndUser" style="text-align:right;">
+				<p>
+					Date du jour :
+					{{ "now"|date('d/m/Y') }}
+				</p>
+				<p>
+					Participant :
+					<b>{{ app.user.username }}</b>
+				</p>
 			</div>
-		{% endfor %}
+
+
+			<div class="row">
+				<div class="homeFilter" style="display:flex;">
+					<div class="col-md-6">
+						<div class="form-group">
+							<table>
+								<tr>
+									<td>
+										<label for="search">Campus</label>
+									</td>
+									<td>
+										<select name="campus" id="campusSelect" style="width: 100%; height: auto">
+											<option>...</option>
+										</select>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding-top : 2rem;">
+										<label for="homeSearch">Le nom de la sortie contient :</label>
+									</td>
+									<td>
+										<input type="text" name="search" id="homeSearch" class="form-control" placeholder="Rechercher"/>
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<label for="startDate">
+											Entre
+										</label>
+									</td>
+									<td>
+										<input type="date" class="date">
+										<label for="endDate">
+											et
+										</label>
+										<input type="date" class="date">
+									</td>
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="form-group">
+								<table style="margin-left:auto">
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>
+											<label for="property">Sorties dont je suis l'organisateur/trice.</label>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>
+											<label for="isSubscribed">Sorties auxquelles je suis inscrit.</label>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>
+											<label for="notSubscribed">Sorties auxquelles je ne suis pas inscrit/e.</label>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<input type="checkbox">
+										</td>
+										<td>
+											<label for="outDated">Sorties passées.</label>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<button class="btn-lg btn-primary">Rechercher</button>
+			</div>
+		</div>
+		<div class="row mt-4">
+			<div class="col-md-12">
+				<table class="table table-striped" style="text-align:center;">
+					<thead class="">
+						<tr>
+							<th>Nom de la sortie</th>
+							<th>Date de la sortie</th>
+							<th>Clôture</th>
+							<th>Inscrits/Places</th>
+							<th>Etat</th>
+							<th>Inscrit</th>
+							<th>Organisateur</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					{% for trip in trips %}
+						<tbody>
+							<tr>
+								<td>
+									{{ trip.name}}
+								</td>
+								<td>
+									{{ trip.dateStart | date('d/m/Y') }}
+								</td>
+
+								<td>
+									{{ trip.limitRegisterDate | date('d/m/Y')}}
+								</td>
+								<td>
+									{{ trip.duration}}
+								</td>
+								<td>
+									{{ trip.maxRegistrations}}
+								</td>
+								<td></td>
+								<td></td>
+								<td>
+									Afficher - Editer - Supprimer
+								</td>
+
+							</tr>
+						</tbody>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+		<button class="btn btn-primary">Créer une sortie</button>
 	</div>
-	<img src="{{asset('./images/home/nature-banner.jpg')}}" style="width:100%; heigth : auto;"/>
-	<div class="jumbotron mt-4"></div>
 
 {% endblock %}

@@ -5,27 +5,42 @@
 {% block body %}
 	<div class="container mt-4" style="text-align:center;">
 		<h1>Gérer les campus</h1>
-		<table class="table table-striped mt-4">
-			<thead>
-				<th>Campus</th>
-				<th>Action</th>
-			</thead>
 
-			{% for campus in campus %}
-				<tbody>
+		<div class="row">
+			<form action="" method="GET">
+				<table class="table mt-4">
 					<tr>
+						<h5>Filtrer les sites</h5>
 						<td>
-							{{campus.name}}
-						</td>
-						<td>
-							<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter</a>
-							<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
-							<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
+							<input type="text" class="campusSearch">
+							<button class="btn btn-primary" type="submit">Rechercher</button>
 						</td>
 					</tr>
-					<tr>
-					{% endfor %}
-				</tbody>
+				</form>
+
+			</div>
+		</table>
+		<form action="">
+			<table class="table table-striped mt-4">
+				<thead>
+					<th>Campus</th>
+					<th>Action</th>
+				</thead>
+
+				{% for campus in campus %}
+					<tbody>
+						<tr>
+							<td>
+								{{campus.name}}
+							</td>
+							<td>
+								<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
+								<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
+								<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter</a>
+							{% endfor %}
+						</tr>
+					</tbody>
+				</form>
 			</table>
 		</div>
 	{% endblock %}

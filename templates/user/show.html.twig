@@ -64,9 +64,16 @@
 						<td>
 							<label for="campus">
 								Campus :
+
 							</label>
 						</td>
-						<td class=""></td>
+						<td class="">
+							{% if user.campus %}
+								{{user.campus.name}}
+							{% else %}
+								Aucun campus
+							{% endif %}
+						</td>
 					</tr>
 				</table>
 				<div class="row">

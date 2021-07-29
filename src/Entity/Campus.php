@@ -14,6 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class Campus
 {
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -22,7 +23,7 @@ class Campus
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="name",type="string", length=255)
      */
     private $name;
 
@@ -31,9 +32,12 @@ class Campus
      */
     private $user_campus;
 
+
+
     public function __construct()
     {
         $this->user_campus = new ArrayCollection();
+        $this->trips = new ArrayCollection();
     }
 
     public function getId(): ?int

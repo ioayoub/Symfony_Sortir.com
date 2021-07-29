@@ -5,8 +5,8 @@
 		<div class="col" style="justify-content : center">
 			<div style="text-align:center;">
 				{% if app.user %}
-					{% if user.imageName  %}
-						<img src="{{ vich_uploader_asset(user, 'imageFile') }}" alt="" style="width: 200px; height: 200px; border-radius : 50%"/>
+					{% if app.user.imageName != null %}
+						<img src="{{ vich_uploader_asset(app.user, 'imageFile') }}" alt="" style="width: 200px; height: 200px; border-radius : 50%"/>
 					{% else %}
 						<img src="/images/users_profile/61013938ab4c0739080988.jpg" alt="Empty profile picture" style="width: 200px; height: 200px; border-radius : 50%"/>
 					{% endif %}
