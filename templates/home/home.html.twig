@@ -141,13 +141,16 @@
 									{{ trip.limitRegisterDate | date('d/m/Y')}}
 								</td>
 								<td>
-									{{ trip.duration}}
-								</td>
-								<td>
 									{{ trip.maxRegistrations}}
 								</td>
+								<td>
+									{{ trip.state.name }}
+								</td>
 								<td></td>
-								<td></td>
+								<td>
+									<a href=" {{path('user_show', {id : trip.isOrganizer.id})}} ">
+										{{ trip.isOrganizer.username }}</a>
+								</td>
 								<td>
 									Afficher - Editer - Supprimer
 								</td>

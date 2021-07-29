@@ -32,6 +32,11 @@ class Campus
      */
     private $user_campus;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trips::class, mappedBy="organizer")
+     */
+    private $trips;
+
 
 
     public function __construct()
@@ -81,6 +86,36 @@ class Campus
             // set the owning side to null (unless already changed)
             if ($userCampus->getCampus() === $this) {
                 $userCampus->setCampus(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trips[]
+     */
+    public function getTrips(): Collection
+    {
+        return $this->trips;
+    }
+
+    public function addTrip(Trips $trip): self
+    {
+        if (!$this->trips->contains($trip)) {
+            $this->trips[] = $trip;
+            $trip->setOrganizer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrip(Trips $trip): self
+    {
+        if ($this->trips->removeElement($trip)) {
+            // set the owning side to null (unless already changed)
+            if ($trip->getOrganizer() === $this) {
+                $trip->setOrganizer(null);
             }
         }
 

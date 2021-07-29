@@ -54,6 +54,17 @@ class Trips
      */
     private $state;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Campus::class, inversedBy="trips")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $organizer;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="trips")
+     */
+    private $isOrganizer;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -140,6 +151,30 @@ class Trips
     public function setState(?State $state): self
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getOrganizer(): ?Campus
+    {
+        return $this->organizer;
+    }
+
+    public function setOrganizer(Campus $organizer): self
+    {
+        $this->organizer = $organizer;
+
+        return $this;
+    }
+
+    public function getIsOrganizer(): ?User
+    {
+        return $this->isOrganizer;
+    }
+
+    public function setIsOrganizer(?User $isOrganizer): self
+    {
+        $this->isOrganizer = $isOrganizer;
 
         return $this;
     }

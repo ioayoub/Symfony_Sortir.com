@@ -23,6 +23,11 @@ class TripsType extends AbstractType
                 'class' => 'App\Entity\State',
                 'choice_label' => 'name',
                 'multiple' => false,
+            ])
+            ->add('isOrganizer', EntityType::class, [
+                'class' => 'App\Entity\User',
+                'choice_label' => 'username',
+                'multiple' => false
             ]);
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -112,12 +114,18 @@ class User implements UserInterface, \Serializable
      */
     private $campus;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Trips::class, mappedBy="isOrganizer")
+     */
+    private $trips;
+
 
 
 
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->trips = new ArrayCollection();
     }
 
 
@@ -354,6 +362,36 @@ class User implements UserInterface, \Serializable
     public function setCampus(?campus $campus): self
     {
         $this->campus = $campus;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trips[]
+     */
+    public function getTrips(): Collection
+    {
+        return $this->trips;
+    }
+
+    public function addTrip(Trips $trip): self
+    {
+        if (!$this->trips->contains($trip)) {
+            $this->trips[] = $trip;
+            $trip->setIsOrganizer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTrip(Trips $trip): self
+    {
+        if ($this->trips->removeElement($trip)) {
+            // set the owning side to null (unless already changed)
+            if ($trip->getIsOrganizer() === $this) {
+                $trip->setIsOrganizer(null);
+            }
+        }
 
         return $this;
     }

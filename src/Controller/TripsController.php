@@ -41,13 +41,22 @@ class TripsController extends AbstractController
 
     public function new(Request $request): Response
     {
-
+        $user = $this->getUser();
         $trip = new Trips();
+
+
+        $organizer = $user->getCampus();
+        $trip->setOrganizer($organizer);
+
+
+
+
 
         $form = $this->createForm(TripsType::class, $trip);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $this->em->persist($trip);
             $this->em->flush();
             return $this->redirectToRoute('trips_index');
@@ -56,6 +65,8 @@ class TripsController extends AbstractController
         return $this->render('trips/new.html.twig', [
             'form' => $form->createView(),
             'trip' => $trip,
+            'user' => $user,
+            'organizer' => $organizer,
         ]);
     }
 
