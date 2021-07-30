@@ -39,7 +39,11 @@
 									</td>
 									<td>
 										<select name="campus" id="campusSelect" style="width: 100%; height: auto">
-											<option>...</option>
+											{% for campus in campus %}
+												<option>
+													{{campus.name}}
+												</option>
+											{% endfor %}
 										</select>
 									</td>
 								</tr>
@@ -146,13 +150,23 @@
 								<td>
 									{{ trip.state.name }}
 								</td>
-								<td></td>
 								<td>
-									<a href=" {{path('user_show', {id : trip.isOrganizer.id})}} ">
-										{{ trip.isOrganizer.username }}</a>
+									<input type="checkbox">
 								</td>
 								<td>
-									Afficher - Editer - Supprimer
+									{% if trip.organizer.id %}
+										<a href=" {{path('user_show', {id : trip.isOrganizer.id})}} ">
+											{{ trip.isOrganizer.username }}</a>
+									{% else %}
+										{{ trip.isOrganizer.username }}
+									{% endif %}
+								</td>
+								<td>
+									<a class="btn btn-success" href=" {{ path('trips_show', {id : trip.id} ) }} ">Afficher</a>
+									{% if trip.isOrganizer.username == app.user.username or is_granted( 'ROLE_ADMIN') %}
+										<a class="btn btn-primary" href=" {{ path('trips_edit', {id : trip.id}) }} ">Editer</a>
+										<a class="btn btn-danger" href=" {{ path('trips_delete', {id : trip.id}) }} ">Supprimer</a>
+									{% endif %}
 								</td>
 
 							</tr>
@@ -161,7 +175,10 @@
 				</table>
 			</div>
 		</div>
-		<button class="btn btn-primary">Créer une sortie</button>
+		<a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a>
+		<br>
+		<br>
+		<br>
 	</div>
 
 {% endblock %}

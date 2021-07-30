@@ -1,5 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
+{% block title 'Administration' %}
 
-{% block body %}{% endblock %}
+{% block body %}
+	<style>
+		li {
+			list-style: none;
+			text-align: center;
+		}
+		h1 {
+			text-align: center;
+		}
+	</style>
+	<h1>Administration</h1>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col-md-12">
+				<ul>
+					<li>
+						<a href=" {{path('admin_user')}} ">Utilisateurs</a>
+					</li>
+					<br>
+					<li>
+						<a href="{{path('campus_index')}}">Campus</a>
+					</li>
+					<br>
+					<li>
+						<a href="{{path('admin_user')}}">Villes</a>
+					</li>
+					<br>
+					<li>
+						<a href="{{path('admin_user')}}">Utilisateurs</a>
+					</li>
+					<br>
+				</div>
+			</div>
+		</div>
+	</ul>
+{% endblock %}

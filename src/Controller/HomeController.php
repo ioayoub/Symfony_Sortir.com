@@ -3,13 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\TripsRepository;
+use App\Entity\State;
+use App\Repository\CampusRepository;
 use App\Repository\UserRepository;
+use App\Repository\TripsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
 {
@@ -23,17 +25,19 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home_")
      */
-    public function index(TripsRepository $tripRepo): Response
+    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo): Response
     {
 
         $user = $this->getUser();
         $trips = $tripRepo->findAll();
+        $campus = $campusRepo->findAll();
 
-        dump($trips);
+        dump($campus);
 
         return $this->render('home/home.html.twig', [
             'user' => $user,
-            'trips' => $trips
+            'trips' => $trips,
+            'campus' => $campus,
 
         ]);
     }

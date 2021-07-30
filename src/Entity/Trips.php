@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\TripsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -64,6 +66,18 @@ class Trips
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="trips")
      */
     private $isOrganizer;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="isSubscribed_id")
+     */
+    private $isSubscribed;
+
+    public function __construct()
+    {
+        $this->isSubscribed = new ArrayCollection();
+    }
+
+
 
     public function getId(): ?int
     {
@@ -150,7 +164,9 @@ class Trips
 
     public function setState(?State $state): self
     {
+
         $this->state = $state;
+
 
         return $this;
     }
@@ -160,7 +176,7 @@ class Trips
         return $this->organizer;
     }
 
-    public function setOrganizer(Campus $organizer): self
+    public function setOrganizer(?Campus $organizer): self
     {
         $this->organizer = $organizer;
 
@@ -175,6 +191,30 @@ class Trips
     public function setIsOrganizer(?User $isOrganizer): self
     {
         $this->isOrganizer = $isOrganizer;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getIsSubscribed(): Collection
+    {
+        return $this->isSubscribed;
+    }
+
+    public function addIsSubscribed(User $isSubscribed): self
+    {
+        if (!$this->isSubscribed->contains($isSubscribed)) {
+            $this->isSubscribed[] = $isSubscribed;
+        }
+
+        return $this;
+    }
+
+    public function removeIsSubscribed(User $isSubscribed): self
+    {
+        $this->isSubscribed->removeElement($isSubscribed);
 
         return $this;
     }

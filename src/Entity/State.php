@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class State
 {
+    const STATE = [
+        1 => 'Créée',
+        2 => 'Ouverte',
+        3 => 'Clôturée'
+    ];
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -77,6 +82,17 @@ class State
                 $state->setState(null);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * Set the value of state
+     */
+    public function setState($state): self
+    {
+        $this->state = $state;
 
         return $this;
     }

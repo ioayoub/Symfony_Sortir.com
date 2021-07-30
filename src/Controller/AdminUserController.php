@@ -15,6 +15,17 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AdminUserController extends AbstractController
 {
     /**
+     * @Route("/admin", name="admin_index")
+     */
+    public function indexUsers(UserRepository $repo)
+    {
+        $users = $repo->findAll();
+        return $this->render('admin/index.html.twig', [
+            'users' => $users
+        ]);
+    }
+
+    /**
      * @Route("/admin/users", name="admin_user")
      */
     public function index(UserRepository $repo, Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $hash): Response

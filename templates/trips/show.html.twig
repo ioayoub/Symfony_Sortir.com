@@ -1,0 +1,119 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Afficher une sortie'%}
+
+{% block body %}
+
+	<h2 style="text-align:center; margin-top: 2rem;">Afficher une sortie</h2>
+	<div class="container">
+		<table class="table mt-4">
+
+			<tr>
+				<td>
+					<label for="name">Nom de la sortie</label>
+					<input type="text" placeholder="{{ trip.name }}" disabled>
+				</td>
+				<td>
+					<label for="Campus">Campus</label>
+					<br>
+					<input type="text" placeholder="{{ trip.organizer.name }}" style="width: 100%" disabled>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label for="name">Date et heure de la sortie</label>
+					<input type="text" placeholder="{{ trip.dateStart | date('d/m/Y') }}" disabled>
+				</td>
+				<td>
+					<label for="ville">Ville</label>
+					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;" disabled>
+						<option value=""></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<label for="registerDate">Date limite d'inscription</label>
+					<input type="text" placeholder="{{ trip.limitRegisterDate | date('d/m/Y') }}" disabled>
+
+
+				</td>
+				<td>
+					<label for="lieu">Lieu</label>
+					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;" disabled>
+						<option value=""></option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td>
+					<label for="maxRegister">Nombre de places</label>
+					<input type="text" placeholder="{{ trip.maxRegistrations }}" disabled>
+				</td>
+				<td>
+					<label for="rue">Rue</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td>
+					<label for="duree">Durée</label>
+					<input type="text" placeholder="{{ trip.duration}}" disabled>
+				</td>
+				<td>
+					<label for="code_postal">Code Postal</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+				</td>
+			</tr>
+
+
+			<tr>
+				<td>
+					<label for="infos">Description et infos</label>
+					<input type="textarea" placeholder="{{ trip.tripInformations }}" disabled>
+				</td>
+				<td>
+					<label for="latitude">Latitude</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+					<label for="Longitude">Longitude</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+
+				</td>
+			</tr>
+
+
+		</table>
+
+		<div style="text-align:center; justify-content: space-between; ">
+
+			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a>
+
+		</div>
+		<br><br><br><br>
+
+		<h4>
+			Liste des participant inscrits :
+		</h4>
+
+		<table class="table">
+			<thead>
+				<th>Pseudo</th>
+				<th>Nom</th>
+			</thead>
+			<tbody>
+				<tr>
+					<td>Test</td>
+					<td>Test</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+{% endblock %}

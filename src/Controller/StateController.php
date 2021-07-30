@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\State;
 use App\Form\StateType;
 use App\Repository\StateRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,8 +19,10 @@ class StateController extends AbstractController
      */
     public function index(StateRepository $stateRepository): Response
     {
+        $state = $stateRepository->findAll();
+
         return $this->render('state/index.html.twig', [
-            'states' => $stateRepository->findAll(),
+            'states' => $state,
         ]);
     }
 
@@ -59,13 +62,16 @@ class StateController extends AbstractController
     /**
      * @Route("/admin/state/edit/{id}", name="state_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, State $state): Response
+    public function edit(Request $request, State $state, EntityManagerInterface $em): Response
     {
+
         $form = $this->createForm(StateType::class, $state);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+
+
+            $em->flush();
 
             return $this->redirectToRoute('state_index', [], Response::HTTP_SEE_OTHER);
         }

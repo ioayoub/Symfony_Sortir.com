@@ -119,6 +119,11 @@ class User implements UserInterface, \Serializable
      */
     private $trips;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Trips::class, mappedBy="isSubscribed")
+     */
+    private $isSubscribed_id;
+
 
 
 
@@ -126,6 +131,7 @@ class User implements UserInterface, \Serializable
     {
         $this->createdAt = new \DateTime();
         $this->trips = new ArrayCollection();
+        $this->isSubscribed_id = new ArrayCollection();
     }
 
 
@@ -391,6 +397,33 @@ class User implements UserInterface, \Serializable
             if ($trip->getIsOrganizer() === $this) {
                 $trip->setIsOrganizer(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Trips[]
+     */
+    public function getIsSubscribedId(): Collection
+    {
+        return $this->isSubscribed_id;
+    }
+
+    public function addIsSubscribedId(Trips $isSubscribedId): self
+    {
+        if (!$this->isSubscribed_id->contains($isSubscribedId)) {
+            $this->isSubscribed_id[] = $isSubscribedId;
+            $isSubscribedId->addIsSubscribed($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIsSubscribedId(Trips $isSubscribedId): self
+    {
+        if ($this->isSubscribed_id->removeElement($isSubscribedId)) {
+            $isSubscribedId->removeIsSubscribed($this);
         }
 
         return $this;
