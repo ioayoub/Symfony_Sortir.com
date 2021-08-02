@@ -36,11 +36,11 @@
 							<td>
 								<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
 								<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
-								<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter</a>
 							{% endfor %}
 						</tr>
 					</tbody>
 				</form>
 			</table>
+			<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter un campus</a>
 		</div>
 	{% endblock %}

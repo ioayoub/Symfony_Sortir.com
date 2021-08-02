@@ -3,9 +3,10 @@
 namespace App\Form;
 
 use App\Entity\Trips;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TripsType extends AbstractType
@@ -14,9 +15,13 @@ class TripsType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('dateStart')
+            ->add('dateStart', DateTimeType::class, [
+                'data' => new \DateTime('now + 4 hours'),
+            ])
             ->add('duration')
-            ->add('limitRegisterDate')
+            ->add('limitRegisterDate', DateTimeType::class, [
+                'data' => new \DateTime('now + 4 hours'),
+            ])
             ->add('maxRegistrations')
             ->add('tripInformations')
             ->add('state', EntityType::class, [

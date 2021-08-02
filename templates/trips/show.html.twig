@@ -23,7 +23,7 @@
 			<tr>
 				<td>
 					<label for="name">Date et heure de la sortie</label>
-					<input type="text" placeholder="{{ trip.dateStart | date('d/m/Y') }}" disabled>
+					<input type="text" placeholder="{{ trip.dateStart | format_datetime('short', locale='fr') }}" disabled>
 				</td>
 				<td>
 					<label for="ville">Ville</label>
@@ -35,7 +35,7 @@
 			<tr>
 				<td>
 					<label for="registerDate">Date limite d'inscription</label>
-					<input type="text" placeholder="{{ trip.limitRegisterDate | date('d/m/Y') }}" disabled>
+					<input type="text" placeholder="{{ trip.limitRegisterDate | format_datetime('short', locale='fr') }}" disabled>
 
 
 				</td>

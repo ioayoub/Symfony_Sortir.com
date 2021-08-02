@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\State;
-use App\Repository\CampusRepository;
+use App\Entity\TripSearch;
+use App\Form\TripSearchType;
 use App\Repository\UserRepository;
 use App\Repository\TripsRepository;
+use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class HomeController extends AbstractController
@@ -25,19 +25,36 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home_")
      */
-    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo): Response
+    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request): Response
     {
 
-        $user = $this->getUser();
+        $userId = $this->getUser()->getId();
+        $user = $this->repo->find($userId);
+        dump($userId);
+
+
         $trips = $tripRepo->findAll();
         $campus = $campusRepo->findAll();
 
-        dump($campus);
+        $search = new TripSearch();
+
+        $form = $this->createForm(TripSearchType::class, $search);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData();
+            $trips = $tripRepo->getAllTrips($search, $userId);
+
+            $search->setIsOrganizerSearch($user->getid());
+
+            dump($search->setIsOrganizerSearch($user->getid()));
+        }
 
         return $this->render('home/home.html.twig', [
             'user' => $user,
             'trips' => $trips,
             'campus' => $campus,
+            'form' => $form->createView()
 
         ]);
     }

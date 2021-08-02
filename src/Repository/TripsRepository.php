@@ -2,9 +2,13 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\Trips;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query;
+use App\Entity\TripSearch;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Trips|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,7 +23,55 @@ class TripsRepository extends ServiceEntityRepository
         parent::__construct($registry, Trips::class);
     }
 
+    public function getAllTrips(TripSearch $search, $user)
+    {
+        $query = $this->createQueryBuilder('t');
 
+        if ($search->getCampusSearch() != null) {
+            $query = $query->andWhere('t.organizer = :organizer');
+            $query->setParameter('organizer', $search->getCampusSearch());
+        }
+
+        if ($search->getManualSearch() != null) {
+            $query = $query->andWhere('t.name = :name');
+            $query->setParameter('name', $search->getManualSearch());
+        }
+
+        if ($search->getStartDateSearch() != null) {
+            $query = $query->andWhere('t.dateStart >= :dateStart');
+            $query->setParameter('dateStart', $search->getStartDateSearch());
+        }
+
+        if ($search->getEndDateSearch() != null) {
+            $query = $query->andWhere('t.limitRegisterDate <= :limitRegisterDate');
+            $query->setParameter('limitRegisterDate', $search->getEndDateSearch());
+        }
+
+        if ($search->getIsOrganizerSearch()) {
+            $query = $query->andWhere('t.isOrganizer = :isOrganizer');
+            $query->setParameter('isOrganizer', $user->getId());
+        }
+
+        if ($search->getIsSubscribedSearch() != null) {
+            $query = $query->andWhere('t.isSubcribed = :isSubcribed');
+            $query->setParameter('isSubcribed', $search->getIsSubscribedSearch());
+        }
+
+        if ($search->getIsNotSubscribedSearch() != null) {
+            $query = $query->andWhere('t.isSubcribed = :isNotSubscribed');
+            $query->setParameter('isNotSubscribed', $search->getIsNotSubscribedSearch());
+        }
+
+        if ($search->getIsOutdatedSearch() != null) {
+            $query = $query->andWhere('t.isOutdated = :isOutdated');
+            $query->setParameter('isOutdated', $search->getIsOutdatedSearch());
+        }
+
+
+
+        dump($query->getQuery()->getDQL());
+        return  $query->getQuery()->getResult();
+    }
 
 
     // /**

@@ -4,10 +4,11 @@
 
 {% block body %}
 
-	<div class="container">
+	<div class="container mt-4">
 		<img src="/images/home/nature-banner.jpg" alt="" style="width:100%;display:block; margin:auto;">
 
 		<div class="jumbotron mt-4">
+
 
 			{% for message in app.flashes('success') %}
 				<div class="alert alert-success" style="text-align : center;">
@@ -32,80 +33,51 @@
 				<div class="homeFilter" style="display:flex;">
 					<div class="col-md-6">
 						<div class="form-group">
-							<table>
+							{{form_start(form)}}
+							<table style="width:100%">
 								<tr>
 									<td>
-										<label for="search">Campus</label>
-									</td>
-									<td>
-										<select name="campus" id="campusSelect" style="width: 100%; height: auto">
-											{% for campus in campus %}
-												<option>
-													{{campus.name}}
-												</option>
-											{% endfor %}
-										</select>
-									</td>
-								</tr>
-								<tr>
-									<td style="padding-top : 2rem;">
-										<label for="homeSearch">Le nom de la sortie contient :</label>
-									</td>
-									<td>
-										<input type="text" name="search" id="homeSearch" class="form-control" placeholder="Rechercher"/>
+										{{form_row(form.campusSearch)}}
 									</td>
 								</tr>
 								<tr>
 									<td>
-										<label for="startDate">
-											Entre
-										</label>
+										{{form_row(form.manualSearch)}}
 									</td>
+
+								</tr>
+								<tr>
 									<td>
-										<input type="date" class="date">
-										<label for="endDate">
-											et
-										</label>
-										<input type="date" class="date">
+										{{form_row(form.startDateSearch)}}
+
+										{{form_row(form.endDateSearch)}}
 									</td>
 								</tr>
 							</table>
 						</div>
 					</div>
-					<div class="row">
-						<div class="col">
+					<div class="row justify-content-center">
+						<div class="col-auto">
 							<div class="form-group">
-								<table style="margin-left:auto">
+								<table class="text-center" style="margin-top : 10rem; margin-left:10rem; ">
 									<tr>
 										<td>
-											<input type="checkbox">
-										</td>
-										<td>
-											<label for="property">Sorties dont je suis l'organisateur/trice.</label>
+											{{form_row(form.isOrganizerSearch)}}
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<input type="checkbox">
-										</td>
-										<td>
-											<label for="isSubscribed">Sorties auxquelles je suis inscrit.</label>
+											{{form_row(form.isSubscribedSearch)}}
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<input type="checkbox">
-										</td>
-										<td>
-											<label for="notSubscribed">Sorties auxquelles je ne suis pas inscrit/e.</label>
+											{{form_row(form.isNotSubscribedSearch)}}
 										</td>
 									</tr>
 									<tr>
 										<td>
-											<input type="checkbox">
-										</td>
-										<td>
-											<label for="outDated">Sorties passées.</label>
+											{{form_row(form.isOutdatedSearch)}}
 										</td>
 									</tr>
 								</table>
@@ -113,8 +85,11 @@
 						</div>
 					</div>
 				</div>
-				<button class="btn-lg btn-primary">Rechercher</button>
+				<button class=" btn-lg btn-primary">Rechercher</button>
+				{{form_end(form)}}
 			</div>
+
+
 		</div>
 		<div class="row mt-4">
 			<div class="col-md-12">
@@ -138,11 +113,11 @@
 									{{ trip.name}}
 								</td>
 								<td>
-									{{ trip.dateStart | date('d/m/Y') }}
+									{{ trip.dateStart | format_datetime(locale='fr') }}
 								</td>
 
 								<td>
-									{{ trip.limitRegisterDate | date('d/m/Y')}}
+									{{ trip.limitRegisterDate | format_datetime(locale='fr') }}
 								</td>
 								<td>
 									{{ trip.maxRegistrations}}
@@ -180,5 +155,4 @@
 		<br>
 		<br>
 	</div>
-
 {% endblock %}
