@@ -44,10 +44,6 @@ class HomeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $search = $form->getData();
             $trips = $tripRepo->getAllTrips($search, $userId);
-
-            $search->setIsOrganizerSearch($user->getid());
-
-            dump($search->setIsOrganizerSearch($user->getid()));
         }
 
         return $this->render('home/home.html.twig', [

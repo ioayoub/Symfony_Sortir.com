@@ -218,4 +218,15 @@ class Trips
 
         return $this;
     }
+
+
+    /**
+     * Set the value of isSubscribed
+     */
+    public function setIsSubscribed($isSubscribed): self
+    {
+        $this->isSubscribed = $isSubscribed;
+
+        return $this;
+    }
 }

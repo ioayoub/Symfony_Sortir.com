@@ -23,7 +23,7 @@ class TripsRepository extends ServiceEntityRepository
         parent::__construct($registry, Trips::class);
     }
 
-    public function getAllTrips(TripSearch $search, $user)
+    public function getAllTrips(TripSearch $search, $userId)
     {
         $query = $this->createQueryBuilder('t');
 
@@ -49,22 +49,22 @@ class TripsRepository extends ServiceEntityRepository
 
         if ($search->getIsOrganizerSearch()) {
             $query = $query->andWhere('t.isOrganizer = :isOrganizer');
-            $query->setParameter('isOrganizer', $user->getId());
+            $query->setParameter('isOrganizer', $userId);
         }
 
         if ($search->getIsSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isSubcribed = :isSubcribed');
-            $query->setParameter('isSubcribed', $search->getIsSubscribedSearch());
+            $query = $query->andWhere('t.isSubscribed MEMBER OF :isSubscribed');
+            $query->setParameter('isSubcribed', $userId());
         }
 
         if ($search->getIsNotSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isSubcribed = :isNotSubscribed');
-            $query->setParameter('isNotSubscribed', $search->getIsNotSubscribedSearch());
+            $query = $query->andWhere(':isNotSubscribed NOT MEMBER OF t.user');
+            $query->setParameter('isNotSubscribed', $userId);
         }
 
-        if ($search->getIsOutdatedSearch() != null) {
-            $query = $query->andWhere('t.isOutdated = :isOutdated');
-            $query->setParameter('isOutdated', $search->getIsOutdatedSearch());
+        if ($search->getIsOutdatedSearch()) {
+            $query = $query->andWhere('t.state <= :state');
+            $query->setParameter('state', 5);
         }
 
 

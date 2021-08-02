@@ -15,7 +15,10 @@ class State
     const STATE = [
         1 => 'Créée',
         2 => 'Ouverte',
-        3 => 'Clôturée'
+        3 => 'Clôturée',
+        4 => 'Activité en cours',
+        5 => 'Passée',
+        6 => 'Annulée'
     ];
     /**
      * @ORM\Id

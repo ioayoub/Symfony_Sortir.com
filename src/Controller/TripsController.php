@@ -42,35 +42,34 @@ class TripsController extends AbstractController
 
     public function new(Request $request, CampusRepository $campRepo): Response
     {
-        $user = $this->getUser();
         $trip = new Trips();
         $campus = $campRepo->findAll();
-
-        $organizer = $user->getCampus();
+        $user = $this->getUser();
 
         $form = $this->createForm(TripsType::class, $trip);
         $form->handleRequest($request);
 
-        $trip->setOrganizer($organizer);
-
-        $user = new User();
-        $isOrganizer = $this->getUser();
-        $trip->setIsOrganizer($isOrganizer);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            //Trip campus
+            $organizer = $user->getCampus();
+            $trip->setOrganizer($organizer);
+
+            $isOrganizer = $this->getUser();
+            $trip->setIsOrganizer($isOrganizer);
+
 
             $this->em->persist($trip);
             $this->em->flush();
             return $this->redirectToRoute('home_');
         }
 
-
         return $this->render('trips/new.html.twig', [
             'form' => $form->createView(),
             'trip' => $trip,
             'user' => $user,
-            'organizer' => $organizer,
             'campus' => $campus,
         ]);
     }

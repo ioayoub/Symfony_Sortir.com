@@ -53,7 +53,6 @@ class TripSearchType extends AbstractType
             ->add('isOrganizerSearch', CheckboxType::class, [
                 'label' => 'Sorties dont je suis l\'organisateur/trice.',
                 'required' => false,
-                'mapped' => false
             ])
             ->add('isSubscribedSearch', CheckboxType::class, [
                 'label' => 'Sorties auxquelles inscrit/e.',
@@ -68,7 +67,6 @@ class TripSearchType extends AbstractType
             ->add('isOutdatedSearch', CheckboxType::class, [
                 'label' => 'Sorties passées.',
                 'required' => false,
-                'mapped' => false
             ]);
     }
 
