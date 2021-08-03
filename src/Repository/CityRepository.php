@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\City;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\CitySearch;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method City|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,6 +20,17 @@ class CityRepository extends ServiceEntityRepository
         parent::__construct($registry, City::class);
     }
 
+    public function getAllCities(CitySearch $search)
+    {
+        $query = $this->createQueryBuilder('c');
+
+        if ($search->getCitySearchName() != null) {
+            $query = $query->andWhere('c.name = :citySearchName');
+            $query->setParameter('citySearchName', $search->getCitySearchName());
+        }
+
+        return $query->getQuery()->getResult();
+    }
     // /**
     //  * @return City[] Returns an array of City objects
     //  */

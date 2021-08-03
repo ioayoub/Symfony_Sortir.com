@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit City
+{% endblock %}
+
+{% block body %}
+	<h1 style="text-align:center;">Modifier une ville</h1>
+
+	{{ include('admin/city/_form.html.twig', {'button_label': 'Mise à jour'}) }}
+
+	<a href="{{ path('admin_city') }}">Retour à la liste</a>
+	<br>
+	{{ include('admin/city/_delete_form.html.twig') }}
+{% endblock %}

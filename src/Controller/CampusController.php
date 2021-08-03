@@ -20,7 +20,7 @@ class CampusController extends AbstractController
         $this->repo = $repo;
     }
     /**
-     * @Route("/admin/campus", name="campus_index")
+     * @Route("/admin/campus", name="admin_campus")
      */
     public function index(): Response
     {

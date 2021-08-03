@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New City
+{% endblock %}
+
+{% block body %}
+	<h1 style="text-align:center;">Créer une ville</h1>
+	<div class="container">
+
+		{{ include('admin/city/_form.html.twig') }}
+		<br>
+		<a href="{{ path('admin_city') }}">Retour à la liste</a>
+
+
+	{% endblock %}
