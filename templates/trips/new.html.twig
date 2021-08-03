@@ -8,7 +8,6 @@
 <div class="container">
 	<table class="table mt-4">
 		{{ form_start(form) }}
-
 		<tr>
 			<td>
 				{{form_row(form.name, {'label': 'Nom de la sortie'})}}
@@ -27,75 +26,80 @@
 				{% endif %}
 			</td>
 		</tr>
-	</td>
-</tr></td></tr><tr><td>
-{{form_row(form.dateStart, {'label': 'Date et heure de la sortie'})}}</td><td>
-<label for="ville">Ville</label>
-<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;">
-	<option value=""></option>
-</select></td></tr><tr><td>
-<div class="row">
-	{{ form_row(form.limitRegisterDate, {'label': 'Date limite d\'inscription' })}}
-				</div>
+		<tr>
+			<td>
+				{{form_row(form.dateStart, {'label': 'Date et heure de la sortie'})}}
 			</td>
 			<td>
-				<label for="lieu">Lieu</label>
+				<label for="ville">Ville</label>
 				<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;">
 					<option value=""></option>
 				</select>
 			</td>
-			</tr>
+		</tr>
+		<tr>
+			<td>
+				{{ form_row(form.limitRegisterDate, {'label': 'Date limite d\'inscription' }) }} </td>
+			<td>
+				<label for="lieu">Lieu</label>
+					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;">
+						<option value=""></option>
+				</select>
+				</td>
+		</tr>
 
-			<tr>
+		<tr>
 				<td>
-						{{form_row(form.duration, {'label': 'Durée'}) }}
+					{{form_row(form.duration, {'label': 'Durée'}) }}
 				</td>
 				<td>
-						<label for="rue">Rue</label>
-						<br>
-						<input type="text" style="width: 100%" disabled>
-				</td>
-			</tr>
-
-
-				<tr>
-				<td>
-						{{form_row(form.maxRegistrations, {'label': 'Nombre de places'}) }}
-				</td>
-				<td>
-						<label for="code_postal">Code Postal</label>
-						<br>
-						<input type="text" style="width: 100%" disabled>
+					<label for="rue">Rue</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
 				</td>
 			</tr>
 
 
 			<tr>
 				<td>
-						{{form_row(form.tripInformations, {'label': 'Description et infos'}) }}
+					{{form_row(form.maxRegistrations, {'label': 'Nombre de places'}) }}
 				</td>
 				<td>
-						<label for="latitude">Latitude</label>
-						<br>
-						<input type="text" style="width: 100%" disabled>
-						<label for="Longitude">Longitude</label>
-						<br>
-						<input type="text" style="width: 100%" disabled>
-
+					<label for="code_postal">Code Postal</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
 				</td>
 			</tr>
-		
+
+
+			<tr>
+				<td>
+					{{form_row(form.tripInformations, {'label': 'Description et infos'}) }}
+				</td>
+				<td>
+					<label for="latitude">Latitude</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+					<label for="Longitude">Longitude</label>
+					<br>
+					<input type="text" style="width: 100%" disabled>
+				</td>
+			</tr>
 	</table>
+
 
 		<div style="text-align:center; justify-content: space-between; ">
 			<button class="btn btn-primary">Valider</button>
-			<input value="Publier" class="btn btn-primary"/>
+			<input value="Publier" class="btn btn-primary">
 			{% if trip.id != null %}
 			<a href="{{path('trips_delete', {id: trip.id})}}"  class="btn btn-danger">Supprimer</a>
 			{% endif %}
 			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Annuler</a>
+		{{ form_end(form) }}
 		</div>
 </div>
-		{{ form_end(form) }}
 <br><br><br><br>
+ 
+		
 {% endblock %}
+  

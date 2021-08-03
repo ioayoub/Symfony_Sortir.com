@@ -50,15 +50,15 @@ class TripsController extends AbstractController
         $form->handleRequest($request);
 
 
+        $organizer = $user->getCampus();
+        $trip->setOrganizer($organizer);
+
+        $isOrganizer = $this->getUser();
+        $trip->setIsOrganizer($isOrganizer);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            //Trip campus
-            $organizer = $user->getCampus();
-            $trip->setOrganizer($organizer);
-
-            $isOrganizer = $this->getUser();
-            $trip->setIsOrganizer($isOrganizer);
+            $trip->addIsSubscribed($user);
 
 
             $this->em->persist($trip);
@@ -94,6 +94,8 @@ class TripsController extends AbstractController
         $trip = $this->repo->find($id);
         $campus = $campRepo->findAll();
 
+
+
         $form = $this->createForm(TripsType::class, $trip);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -119,15 +121,41 @@ class TripsController extends AbstractController
     {
         $trip = $this->repo->find($id);
         $campus = $campRepo->findAll();
+        $user = $this->getUser();
+        $isSubscribed = $trip->getIsSubscribed();
 
-
+        dump($trip);
 
         return $this->render('trips/show.html.twig', [
             'trip' => $trip,
             'campus' => $campus,
-
-
+            'isSubscribed' => $isSubscribed,
 
         ]);
+    }
+    /**
+     * @Route("/trips/subscribe/{id}", name="trips_subscribe")
+     */
+    public function subscribe($id): Response
+    {
+        $trip = $this->repo->find($id);
+        $user = $this->getUser();
+        $user->addIsSubscribedId($trip);
+        $this->em->persist($trip);
+        $this->em->flush();
+        return $this->redirectToRoute('home_');
+    }
+
+    /**
+     * @Route("/trips/unsubscribe/{id}", name="trips_unsubscribe")
+     */
+    public function unsubscribe($id): Response
+    {
+        $trip = $this->repo->find($id);
+        $user = $this->getUser();
+        $user->removeIsSubscribedId($trip);
+        $this->em->persist($trip);
+        $this->em->flush();
+        return $this->redirectToRoute('home_');
     }
 }

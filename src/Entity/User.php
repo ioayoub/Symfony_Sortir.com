@@ -120,7 +120,8 @@ class User implements UserInterface, \Serializable
     private $trips;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Trips::class, mappedBy="isSubscribed")
+     * @ORM\ManyToMany(targetEntity=Trips::class, inversedBy="isSubscribed")
+     * @ORM\JoinTable(name="trips_user")
      */
     private $isSubscribed_id;
 

@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TripsType extends AbstractType
@@ -24,7 +25,9 @@ class TripsType extends AbstractType
                 'data' => new \DateTime('now + 4 hours'),
             ])
             ->add('maxRegistrations')
-            ->add('tripInformations')
+            ->add('tripInformations', TextareaType::class, [
+                'label' => 'Description'
+            ])
             ->add('state', EntityType::class, [
                 'class' => 'App\Entity\State',
                 'choice_label' => 'name',

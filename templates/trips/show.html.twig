@@ -6,7 +6,7 @@
 
 	<h2 style="text-align:center; margin-top: 2rem;">Afficher une sortie</h2>
 	<div class="container">
-		<table class="table mt-4">
+		<table class="table table-striped mt-4">
 
 			<tr>
 				<td>
@@ -94,6 +94,8 @@
 
 		<div style="text-align:center; justify-content: space-between; ">
 
+			<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
+			<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-danger">Désinscription</a>
 			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a>
 
 		</div>
@@ -103,16 +105,20 @@
 			Liste des participant inscrits :
 		</h4>
 
-		<table class="table">
+		<table class="table table-striped">
 			<thead>
 				<th>Pseudo</th>
 				<th>Nom</th>
 			</thead>
 			<tbody>
-				{% for subscribers in trip.isSubscribed %}
+				{% for isSubscribed in isSubscribed %}
 					<tr>
-						<td>{{trip.isSubscribed}}</td>
-						<td>Test</td>
+						<td>
+							{{isSubscribed.username}}
+						</td>
+						<td>
+							{{isSubscribed.firstname}}
+						</td>
 					</tr>
 				{% endfor %}
 			</tbody>

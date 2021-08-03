@@ -120,14 +120,23 @@
 									{{ trip.limitRegisterDate | format_datetime(locale='fr') }}
 								</td>
 								<td>
-									{{ trip.maxRegistrations}}
+									{{ trip.maxRegistrations}}/{{ trip.maxRegistrations}}
 								</td>
 								<td>
 									{{ trip.state.name }}
 								</td>
-								<td>
-									<input type="checkbox" value="  ">
-								</td>
+
+								{% if trip.isSubscribed.owner   %}
+									<td>
+										X
+									</td>
+								{% else %}
+									<td>
+										<input type="checkbox">
+									</td>
+								{% endif %}
+
+
 								<td>
 									{% if trip.organizer.id %}
 										<a href=" {{path('user_show', {id : trip.isOrganizer.id})}} ">
@@ -143,16 +152,11 @@
 										<a class="btn btn-danger" href=" {{ path('trips_delete', {id : trip.id}) }} ">Supprimer</a>
 									{% endif %}
 								</td>
-
 							</tr>
 						</tbody>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-		<a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a>
-		<br>
-		<br>
-		<br>
-	</div>
-{% endblock %}
+					</tr>
+				</tbody>
+			</tr>
+		</tbody>
+	{% endfor %}
+</table></div></div><a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a><br><br><br></div>{% endblock %}

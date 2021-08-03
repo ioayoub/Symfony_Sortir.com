@@ -12,6 +12,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Trips
 {
+    const IS_SUBSCRIBED = true;
+    const IS_NOT_SUBSCRIBED = false;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -68,7 +70,8 @@ class Trips
     private $isOrganizer;
 
     /**
-     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="isSubscribed_id")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="isSubscribed_id")
+     * @ORM\JoinTable(name="trips_user")
      */
     private $isSubscribed;
 

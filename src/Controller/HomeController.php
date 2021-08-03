@@ -28,17 +28,14 @@ class HomeController extends AbstractController
     public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request): Response
     {
 
+        $user = $this->getUser();
         $userId = $this->getUser()->getId();
-        $user = $this->repo->find($userId);
-        dump($userId);
-
 
         $trips = $tripRepo->findAll();
         $campus = $campusRepo->findAll();
-        dump($trips);
 
         $search = new TripSearch();
-
+        dump($trips);
         $form = $this->createForm(TripSearchType::class, $search);
         $form->handleRequest($request);
 
@@ -51,7 +48,7 @@ class HomeController extends AbstractController
             'user' => $user,
             'trips' => $trips,
             'campus' => $campus,
-            'form' => $form->createView()
+            'form' => $form->createView(),
 
         ]);
     }
