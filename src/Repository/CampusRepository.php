@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Campus;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\CampusSearch;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Campus|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,16 +20,13 @@ class CampusRepository extends ServiceEntityRepository
         parent::__construct($registry, Campus::class);
     }
 
-    public function findSearchedCampus(Campus $data): array
+    public function getAllCampus(CampusSearch $search)
     {
-        $queryBuilder = $this->createQueryBuilder('c')
-            ->select('c');
+        $query = $this->createQueryBuilder('c');
 
-        if (!empty($data)) {
-            $query =
-                $queryBuilder->where('c.name LIKE :search')
-                ->setParameter('search', '%' . $data->getName() . '%');
-            dump($data->getName());
+        if ($search->getCampusSearchName() != null) {
+            $query = $query->andWhere('c.name = :campusSearchName');
+            $query->setParameter('campusSearchName', $search->getCampusSearchName());
         }
 
         return $query->getQuery()->getResult();

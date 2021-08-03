@@ -3,43 +3,31 @@
 {% block title 'Gestion campus' %}
 
 {% block body %}
-	<div class="container mt-4" style="text-align:center;">
-		<h1>Gérer les campus</h1>
+	<div class="container mt-4">
+		<h1 style="text-align:center;">Gérer les campus</h1>
 
-		<div class="row">
-			<form action="" method="GET">
-				<table class="table mt-4">
+		{{ form_start(form) }}
+		{{ form_widget(form) }}
+		<button class="btn btn-primary">Rechercher</button>
+		{{ form_end(form) }}
+		<table class="table table-striped mt-4">
+			<thead>
+				<th>Campus</th>
+				<th>Action</th>
+			</thead>
+
+			{% for campus in campus %}
+				<tbody>
 					<tr>
-						<h5>Filtrer les sites</h5>
 						<td>
-							<input type="text" class="campusSearch">
-							<button class="btn btn-primary" type="submit">Rechercher</button>
+							{{campus.name}}
 						</td>
+						<td>
+							<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
+							<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
+						{% endfor %}
 					</tr>
-				</form>
-
-			</div>
-		</table>
-		<form action="">
-			<table class="table table-striped mt-4">
-				<thead>
-					<th>Campus</th>
-					<th>Action</th>
-				</thead>
-
-				{% for campus in campus %}
-					<tbody>
-						<tr>
-							<td>
-								{{campus.name}}
-							</td>
-							<td>
-								<a href=" {{path('campus_edit', {id : campus.id})}} " class="btn btn-primary">Editer</a>
-								<a href=" {{path('campus_delete', {id : campus.id})}} " class="btn btn-danger">Supprimer</a>
-							{% endfor %}
-						</tr>
-					</tbody>
-				</form>
+				</tbody>
 			</table>
 			<a href=" {{path('campus_create')}} " class="btn btn-success">Ajouter un campus</a>
 		</div>

@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Campus;
 use App\Form\CampusType;
+use App\Entity\CampusSearch;
+use App\Form\CampusSearchType;
 use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,11 +24,22 @@ class CampusController extends AbstractController
     /**
      * @Route("/admin/campus", name="admin_campus")
      */
-    public function index(): Response
+    public function index(Request $request, CampusRepository $campRepo): Response
     {
+        $search = new CampusSearch();
         $campus = $this->repo->findAll();
+
+        $form = $this->createForm(CampusSearchType::class, $search);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $search = $form->getData();
+            $campus = $this->repo->getAllCampus($search);
+        }
+
         return $this->render('admin/campus/index.html.twig', [
-            'campus' => $campus
+            'campus' => $campus,
+            'form' => $form->createView(),
         ]);
     }
 
