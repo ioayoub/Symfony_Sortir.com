@@ -72,6 +72,11 @@ class Trips
      */
     private $isSubscribed;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Place::class, inversedBy="trips")
+     */
+    private $tripsPlace;
+
     public function __construct()
     {
         $this->isSubscribed = new ArrayCollection();
@@ -226,6 +231,18 @@ class Trips
     public function setIsSubscribed($isSubscribed): self
     {
         $this->isSubscribed = $isSubscribed;
+
+        return $this;
+    }
+
+    public function getTripsPlace(): ?Place
+    {
+        return $this->tripsPlace;
+    }
+
+    public function setTripsPlace(?Place $tripsPlace): self
+    {
+        $this->tripsPlace = $tripsPlace;
 
         return $this;
     }

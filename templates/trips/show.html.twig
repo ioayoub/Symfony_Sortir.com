@@ -109,11 +109,13 @@
 				<th>Nom</th>
 			</thead>
 			<tbody>
-				<tr>
-					<td>Test</td>
-					<td>Test</td>
-				</tr>
+				{% for subscribers in trip.isSubscribed %}
+					<tr>
+						<td>{{trip.isSubscribed}}</td>
+						<td>Test</td>
+					</tr>
+				{% endfor %}
 			</tbody>
-		</table>
-	</div>
-{% endblock %}
+		</tbody>
+	</table>
+</div>{% endblock %}

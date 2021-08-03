@@ -35,6 +35,7 @@ class HomeController extends AbstractController
 
         $trips = $tripRepo->findAll();
         $campus = $campusRepo->findAll();
+        dump($trips);
 
         $search = new TripSearch();
 
