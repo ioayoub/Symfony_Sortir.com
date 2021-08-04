@@ -8,6 +8,7 @@ use App\Repository\UserRepository;
 use App\Repository\TripsRepository;
 use App\Repository\CampusRepository;
 use App\Repository\StateRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,7 +27,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home_")
      */
-    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request, StateRepository $stateRepo): Response
+    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request, StateRepository $stateRepo, EntityManagerInterface $em): Response
     {
 
         $user = $this->getUser();
@@ -53,15 +54,30 @@ class HomeController extends AbstractController
 
             $today = new \DateTime();
 
-            if ($today->format('Y-m-d') > $trip->getLimitRegisterDate()->format('Y-m-d')) {
-                $trip->setState($stateRepo->find(5));
+            //state 2 = Open
+            if ($today <= $trip->getLimitRegisterDate() && $trip->getIsRegistered() == $trip->getMaxRegistrations()) {
+                $trip->setState($stateRepo->find(2));
             }
-            if ($today->format('Y-m-d') == $trip->getDateStart()->format('Y-m-d')) {
+            //State 3 = Closed
+            if ($today >= $trip->getLimitRegisterDate() || $trip->getIsRegistered() == $trip->getMaxRegistrations()) {
+                $trip->setState($stateRepo->find(3));
+            }
+            //State 4 = In progress
+            if ($today > $trip->getLimitRegisterDate() && $today <= $trip->getDateStart($trip->getDateStart('PT' . $trip->getDuration() . 'M'))) {
                 $trip->setState($stateRepo->find(4));
             }
-            if ($today->format('Y-m-d') > $trip->getDateStart()->format('Y-m-d')) {
+            //State 5 = Ended
+            if ($today > $trip->getDateStart() && $today > $trip->getLimitRegisterDate() &&  $today > $trip->getDateStart($trip->getDateStart('PT' . $trip->getDuration() . 'M'))) {
                 $trip->setState($stateRepo->find(5));
             }
+            //State 6 = canceled
+            //State 7 = Archived
+            if ($trip->getLimitRegisterDate() > $trip->getDateStart($trip->getLimitRegisterDate('PT30D'))) {
+                $trip->setState($stateRepo->find(7));
+            }
+
+            $em->flush();
+
         }
 
         return $this->render('home/home.html.twig', [

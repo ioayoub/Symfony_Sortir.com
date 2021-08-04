@@ -21,8 +21,20 @@ class TripsType extends AbstractType
             ->add('dateStart', DateTimeType::class, [
                 'data' => new \DateTime('now + 4 hours'),
             ])
-            ->add('duration')
-            ->add('limitRegisterDate')
+            ->add('duration', ChoiceType::class, [
+                'choices' => [
+                    '30' => '30',
+                    '60' => '60',
+                    '90' => '90',
+                    '120' => '120',
+                    '180' => '180',
+                    '240' => '240'
+                ]
+            ])
+
+            ->add('limitRegisterDate', DateType::class, [
+                'data' => new \DateTime('now'),
+            ])
             ->add('maxRegistrations')
             ->add('tripInformations', TextareaType::class, [
                 'label' => 'Description'

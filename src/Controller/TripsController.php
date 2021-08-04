@@ -63,7 +63,6 @@ class TripsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $trip->addIsSubscribed($user);
             $trip->setNbRegistered($trip->getMaxRegistrations());
             $trip->setState($stateRepo->find(1));
 

@@ -50,7 +50,7 @@
 
 		<tr>
 				<td>
-					{{form_row(form.duration, {'label': 'Durée'}) }}
+					{{form_row(form.duration, {'label': 'Durée (Minutes)'}) }}
 				</td>
 				<td>
 					<label for="rue">Rue</label>
@@ -89,10 +89,10 @@
 
 
 		<div style="text-align:center; justify-content: space-between; ">
-			<button class="btn btn-primary">Valider</button>
-			<input value="Publier" class="btn btn-primary">
+			<button class="btn btn-primary">Enregistrer</button>
 			{% if trip.id != null %}
-			<a href="{{path('trips_delete', {id: trip.id})}}"  class="btn btn-danger">Supprimer</a>
+			<a href=" {{path('trips_publish', {id : trip.id})}} " class="btn btn-info">Publier la sortie</a>
+			<a href="{{path('trips_delete', {id: trip.id})}}"  class="btn btn-danger">Supprimer la sortie</a>
 			{% endif %}
 			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Annuler</a>
 		{{ form_end(form) }}
@@ -103,3 +103,5 @@
 		
 {% endblock %}
   
+ 
+		

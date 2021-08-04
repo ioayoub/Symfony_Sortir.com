@@ -35,7 +35,7 @@
 			<tr>
 				<td>
 					<label for="registerDate">Date limite d'inscription</label>
-					<input type="text" placeholder="{{ trip.limitRegisterDate }}" disabled>
+					<input type="text" placeholder="{{ trip.limitRegisterDate | date('d/m/Y') }}" disabled>
 
 
 				</td>
@@ -62,7 +62,7 @@
 
 			<tr>
 				<td>
-					<label for="duree">Durée</label>
+					<label for="duree">Durée (Minutes)</label>
 					<input type="text" placeholder="{{ trip.duration}}" disabled>
 				</td>
 				<td>
@@ -92,13 +92,15 @@
 
 		</table>
 
-		<div style="text-align:center; justify-content: space-between; ">
+		{# <div style="text-align:center; justify-content: space-between; ">
+									<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
+									{% if trip.state.id == 1 %}
+										<a href="{{ path('trips_delete', { 'id': trip.id }) }}" class="btn btn-danger">Supprimer</a>
+									{% endif %}
+									<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-warning">Désinscription</a>
+									<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a> #}
 
-			<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
-			<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-danger">Désinscription</a>
-			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a>
 
-		</div>
 		<br><br><br><br>
 
 		<h4>
@@ -122,6 +124,6 @@
 					</tr>
 				{% endfor %}
 			</tbody>
-		</tbody>
-	</table>
-</div>{% endblock %}
+		</table>
+	</div>
+{% endblock %}

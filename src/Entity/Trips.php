@@ -12,8 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Trips
 {
-    const IS_SUBSCRIBED = true;
-    const IS_NOT_SUBSCRIBED = false;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
