@@ -117,7 +117,7 @@
 								</td>
 
 								<td>
-									{{ trip.limitRegisterDate | format_datetime(locale='fr') }}
+									{{ trip.limitRegisterDate | date('d/m/Y') }}
 								</td>
 								<td>
 									{{ trip.nbRegistered }}/{{ trip.maxRegistrations}}
@@ -133,8 +133,6 @@
 								{% else %}
 									<td></td>
 								{% endif %}
-
-
 								<td>
 									{% if trip.organizer.id %}
 										<a href=" {{path('user_show', {id : trip.isOrganizer.id})}} ">
@@ -143,18 +141,33 @@
 										{{ trip.isOrganizer.username }}
 									{% endif %}
 								</td>
-								<td>
-									<a class="btn btn-success" href=" {{ path('trips_show', {id : trip.id} ) }} ">Afficher</a>
-									{% if trip.isOrganizer.username == app.user.username or is_granted( 'ROLE_ADMIN') %}
-										<a class="btn btn-primary" href=" {{ path('trips_edit', {id : trip.id}) }} ">Editer</a>
-										<a class="btn btn-danger" href=" {{ path('trips_delete', {id : trip.id}) }} ">Supprimer</a>
+
+								<td style="text-align:left;">
+									{% if trip.isOrganizer.username == app.user.username and  trip.state.id != 4 or is_granted( 'ROLE_ADMIN') %}
+										<a class="btn btn-primary" href=" {{ path('trips_edit', {id : trip.id}) }} ">Modifier</a>
+										{% if is_granted('ROLE_ADMIN') %}
+											<a class="btn btn-danger" href=" {{ path('trips_delete', {id : trip.id}) }} ">Supprimer</a>
+										{% endif %}
+										{% if trip.state.id == 1 %}
+											<a class="btn btn-info" href=" {{path('trips_publish', {id: trip.id})}} ">Publier</a>
+										{% endif %}
+									{% else %}
+										<a class="btn btn-primary" href=" {{ path('trips_show', {id : trip.id} ) }} ">Afficher</a>
+									{% endif %}
+
+									{% if trip.state.id != 3 and trip.state.id != 1 and trip.isOrganizer.username != app.user.username %}
+										{% if not trip.isRegistered %}
+											<a class="btn btn-success" href=" {{ path('trips_subscribe', {id : trip.id}) }} ">S'inscrire</a>
+										{% elseif trip.state %}
+											<a class="btn btn-warning" href=" {{ path('trips_unsubscribe', {id : trip.id}) }} ">Se désister</a>
+										{% endif %}
 									{% endif %}
 								</td>
 							</tr>
 						</tbody>
-					</tr>
-				</tbody>
-			</tr>
-		</tbody>
-	{% endfor %}
-</table></div></div><a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a><br><br><br></div>{% endblock %}
+					</td>
+				</tr>
+			</tbody>
+		{% endfor %}
+	</table>
+</div></div><a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a><br><br><br></div>{% endblock %}

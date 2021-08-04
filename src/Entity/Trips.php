@@ -37,7 +37,7 @@ class Trips
     private $duration;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      */
     private $limitRegisterDate;
 

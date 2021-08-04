@@ -173,4 +173,16 @@ class TripsController extends AbstractController
         $this->em->flush();
         return $this->redirectToRoute('home_');
     }
+
+    /**
+     * @Route("/trips/publish/{id}", name="trips_publish")
+     */
+    public function publish($id, StateRepository $stateRepo): Response
+    {
+        $trip = $this->repo->find($id);
+        $trip->setState($stateRepo->find(2));
+        $this->em->persist($trip);
+        $this->em->flush();
+        return $this->redirectToRoute('home_');
+    }
 }

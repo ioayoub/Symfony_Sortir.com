@@ -52,17 +52,24 @@ class HomeController extends AbstractController
             $nbRegistered = $trip->getMaxRegistrations() - $nbRegistered;
 
             $today = new \DateTime();
+
+            if ($today->format('Y-m-d') > $trip->getLimitRegisterDate()->format('Y-m-d')) {
+                $trip->setState($stateRepo->find(5));
+            }
+            if ($today->format('Y-m-d') == $trip->getDateStart()->format('Y-m-d')) {
+                $trip->setState($stateRepo->find(4));
+            }
             if ($today->format('Y-m-d') > $trip->getDateStart()->format('Y-m-d')) {
                 $trip->setState($stateRepo->find(5));
             }
         }
-
 
         return $this->render('home/home.html.twig', [
             'user' => $user,
             'trips' => $trips,
             'campus' => $campus,
             'form' => $form->createView(),
+            'closed' => $trip->getState($stateRepo->find(4))
 
 
         ]);
