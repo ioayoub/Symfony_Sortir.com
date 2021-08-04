@@ -27,11 +27,11 @@ class TripsType extends AbstractType
             ->add('maxRegistrations')
             ->add('tripInformations', TextareaType::class, [
                 'label' => 'Description'
-            ])
-            ->add('state', EntityType::class, [
-                'class' => 'App\Entity\State',
-                'choice_label' => 'name',
-                'multiple' => false,
+                // ])
+                // ->add('state', EntityType::class, [
+                //     'class' => 'App\Entity\State',
+                //     'choice_label' => 'name',
+                //     'multiple' => false,
             ]);
     }
 

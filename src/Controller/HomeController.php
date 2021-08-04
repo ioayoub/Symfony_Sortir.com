@@ -7,6 +7,7 @@ use App\Form\TripSearchType;
 use App\Repository\UserRepository;
 use App\Repository\TripsRepository;
 use App\Repository\CampusRepository;
+use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,7 +26,7 @@ class HomeController extends AbstractController
     /**
      * @Route("/home", name="home_")
      */
-    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request): Response
+    public function index(TripsRepository $tripRepo, CampusRepository $campusRepo, Request $request, StateRepository $stateRepo): Response
     {
 
         $user = $this->getUser();
@@ -35,7 +36,7 @@ class HomeController extends AbstractController
         $campus = $campusRepo->findAll();
 
         $search = new TripSearch();
-        dump($trips);
+
         $form = $this->createForm(TripSearchType::class, $search);
         $form->handleRequest($request);
 
@@ -44,11 +45,25 @@ class HomeController extends AbstractController
             $trips = $tripRepo->getAllTrips($search, $userId);
         }
 
+        foreach ($trips as $trip) {
+            $registered = $trip->getIsSubscribed()->contains($user);
+            $nbRegistered = $trip->getIsSubscribed()->count();
+            $trip->setIsRegistered($registered);
+            $nbRegistered = $trip->getMaxRegistrations() - $nbRegistered;
+
+            $today = new \DateTime();
+            if ($today->format('Y-m-d') > $trip->getDateStart()->format('Y-m-d')) {
+                $trip->setState($stateRepo->find(5));
+            }
+        }
+
+
         return $this->render('home/home.html.twig', [
             'user' => $user,
             'trips' => $trips,
             'campus' => $campus,
             'form' => $form->createView(),
+
 
         ]);
     }

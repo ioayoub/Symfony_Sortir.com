@@ -80,6 +80,16 @@ class Trips
      */
     private $tripsPlace;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $isRegistered;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $nbRegistered;
+
     public function __construct()
     {
         $this->isSubscribed = new ArrayCollection();
@@ -246,6 +256,30 @@ class Trips
     public function setTripsPlace(?Place $tripsPlace): self
     {
         $this->tripsPlace = $tripsPlace;
+
+        return $this;
+    }
+
+    public function getIsRegistered(): ?bool
+    {
+        return $this->isRegistered;
+    }
+
+    public function setIsRegistered(?bool $isRegistered): self
+    {
+        $this->isRegistered = $isRegistered;
+
+        return $this;
+    }
+
+    public function getNbRegistered(): ?int
+    {
+        return $this->nbRegistered;
+    }
+
+    public function setNbRegistered(int $nbRegistered): self
+    {
+        $this->nbRegistered = $nbRegistered;
 
         return $this;
     }

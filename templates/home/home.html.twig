@@ -120,20 +120,18 @@
 									{{ trip.limitRegisterDate | format_datetime(locale='fr') }}
 								</td>
 								<td>
-									{{ trip.maxRegistrations}}/{{ trip.maxRegistrations}}
+									{{ trip.nbRegistered }}/{{ trip.maxRegistrations}}
 								</td>
 								<td>
 									{{ trip.state.name }}
 								</td>
 
-								{% if trip.isSubscribed.owner   %}
+								{% if trip.isRegistered  %}
 									<td>
 										X
 									</td>
 								{% else %}
-									<td>
-										<input type="checkbox">
-									</td>
+									<td></td>
 								{% endif %}
 
 

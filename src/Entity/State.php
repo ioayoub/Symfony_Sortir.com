@@ -20,6 +20,9 @@ class State
         5 => 'Passée',
         6 => 'Annulée'
     ];
+
+    const STATE_CANCELED = 6;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

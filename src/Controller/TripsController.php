@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\State;
 use App\Entity\Trips;
 use App\Form\TripsType;
-use App\Repository\CampusRepository;
 use App\Repository\TripsRepository;
+use App\Repository\CampusRepository;
+use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +42,7 @@ class TripsController extends AbstractController
      * @Route("/trips/new", name="trips_new")
      */
 
-    public function new(Request $request, CampusRepository $campRepo): Response
+    public function new(Request $request, CampusRepository $campRepo, StateRepository $stateRepo): Response
     {
         $trip = new Trips();
         $campus = $campRepo->findAll();
@@ -50,16 +52,20 @@ class TripsController extends AbstractController
         $form->handleRequest($request);
 
 
+        dump($trip->getState());
+
         $organizer = $user->getCampus();
         $trip->setOrganizer($organizer);
 
         $isOrganizer = $this->getUser();
         $trip->setIsOrganizer($isOrganizer);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
 
             $trip->addIsSubscribed($user);
-
+            $trip->setNbRegistered($trip->getMaxRegistrations());
+            $trip->setState($stateRepo->find(1));
 
             $this->em->persist($trip);
             $this->em->flush();
@@ -89,7 +95,7 @@ class TripsController extends AbstractController
     /**
      * @Route("/trips/edit/{id}", name="trips_edit")
      */
-    public function edit(int $id, Request $request, CampusRepository $campRepo): Response
+    public function edit(int $id, Request $request, CampusRepository $campRepo, StateRepository $stateRepo): Response
     {
         $trip = $this->repo->find($id);
         $campus = $campRepo->findAll();
@@ -99,6 +105,10 @@ class TripsController extends AbstractController
         $form = $this->createForm(TripsType::class, $trip);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $trip->setNbRegistered($trip->getMaxRegistrations());
+            $trip->setNbRegistered($trip->getNbRegistered() - $trip->getIsSubscribed()->count());
+
 
 
             $this->em->persist($trip);
@@ -122,7 +132,9 @@ class TripsController extends AbstractController
         $trip = $this->repo->find($id);
         $campus = $campRepo->findAll();
         $user = $this->getUser();
-        $isSubscribed = $trip->getIsSubscribed();
+        $isSubscribed = $trip->getIsSubscribed($user);
+
+
 
         dump($trip);
 
@@ -141,6 +153,7 @@ class TripsController extends AbstractController
         $trip = $this->repo->find($id);
         $user = $this->getUser();
         $user->addIsSubscribedId($trip);
+        $trip->setNbRegistered($trip->getNbRegistered() + 1);
         $this->em->persist($trip);
         $this->em->flush();
         return $this->redirectToRoute('home_');
@@ -154,6 +167,8 @@ class TripsController extends AbstractController
         $trip = $this->repo->find($id);
         $user = $this->getUser();
         $user->removeIsSubscribedId($trip);
+        $trip->setNbRegistered($trip->getNbRegistered() - 1);
+
         $this->em->persist($trip);
         $this->em->flush();
         return $this->redirectToRoute('home_');

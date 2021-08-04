@@ -53,8 +53,8 @@ class TripsRepository extends ServiceEntityRepository
         }
 
         if ($search->getIsSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isSubscribed MEMBER OF :isSubscribed');
-            $query->setParameter('isSubcribed', $userId());
+            $query = $query->andWhere('t.isRegistered = 1');
+            $query->setParameter('isRegistered', $userId());
         }
 
         if ($search->getIsNotSubscribedSearch() != null) {
