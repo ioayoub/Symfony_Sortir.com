@@ -63,7 +63,7 @@ class TripsController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $trip->setNbRegistered($trip->getMaxRegistrations());
+
             $trip->setState($stateRepo->find(1));
 
             $this->em->persist($trip);
@@ -105,8 +105,8 @@ class TripsController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
 
-            $trip->setNbRegistered($trip->getMaxRegistrations());
-            $trip->setNbRegistered($trip->getNbRegistered() - $trip->getIsSubscribed()->count());
+            $trip->setNbRegistered(0);
+            $trip->setNbRegistered($trip->getNbRegistered() + $trip->getIsSubscribed()->count());
 
 
 

@@ -87,7 +87,7 @@ class Trips
     /**
      * @ORM\Column(type="integer")
      */
-    private $nbRegistered;
+    private $nbRegistered = 0;
 
     public function __construct()
     {

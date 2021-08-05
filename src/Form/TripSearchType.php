@@ -57,7 +57,8 @@ class TripSearchType extends AbstractType
             ->add('isSubscribedSearch', CheckboxType::class, [
                 'label' => 'Sorties auxquelles inscrit/e.',
                 'required' => false,
-                'mapped' => false
+
+
             ])
             ->add('isNotSubscribedSearch', CheckboxType::class, [
                 'label' => 'Sorties auxquelles je ne suis pas inscrit/e.',

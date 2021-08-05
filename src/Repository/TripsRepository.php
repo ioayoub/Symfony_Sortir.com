@@ -52,14 +52,13 @@ class TripsRepository extends ServiceEntityRepository
             $query->setParameter('isOrganizer', $userId);
         }
 
+        //query trip where user_id and trip_id are null from manytomany trips_user
         if ($search->getIsSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isRegistered = 1');
-            $query->setParameter('isRegistered', $userId());
+            $query = $query->andWhere('t.isSubscribed = :isSubscribed');
+            $query->setParameter('isSubscribed', $search->getIsSubscribedSearch());
         }
-
         if ($search->getIsNotSubscribedSearch() != null) {
-            $query = $query->andWhere(':isNotSubscribed NOT MEMBER OF t.user');
-            $query->setParameter('isNotSubscribed', $userId);
+            $query = $query->andWhere('t.isSubscribed IS NULL');
         }
 
         if ($search->getIsOutdatedSearch()) {

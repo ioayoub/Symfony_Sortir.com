@@ -55,15 +55,15 @@ class HomeController extends AbstractController
             $today = new \DateTime();
 
             //state 2 = Open
-            if ($today <= $trip->getLimitRegisterDate() && $trip->getIsRegistered() == $trip->getMaxRegistrations()) {
+            if ($today <= $trip->getLimitRegisterDate() && $trip->getNbRegistered() < $trip->getMaxRegistrations()) {
                 $trip->setState($stateRepo->find(2));
             }
             //State 3 = Closed
-            if ($today >= $trip->getLimitRegisterDate() || $trip->getIsRegistered() == $trip->getMaxRegistrations()) {
+            if ($today > $trip->getLimitRegisterDate() || $trip->getNbRegistered() == $trip->getMaxRegistrations()) {
                 $trip->setState($stateRepo->find(3));
             }
             //State 4 = In progress
-            if ($today > $trip->getLimitRegisterDate() && $today <= $trip->getDateStart($trip->getDateStart('PT' . $trip->getDuration() . 'M'))) {
+            if ($today > $trip->getLimitRegisterDate() && $today == $trip->getDateStart($trip->getDateStart('PT' . $trip->getDuration() . 'M'))) {
                 $trip->setState($stateRepo->find(4));
             }
             //State 5 = Ended
@@ -71,13 +71,13 @@ class HomeController extends AbstractController
                 $trip->setState($stateRepo->find(5));
             }
             //State 6 = canceled
+
             //State 7 = Archived
             if ($trip->getLimitRegisterDate() > $trip->getDateStart($trip->getLimitRegisterDate('PT30D'))) {
                 $trip->setState($stateRepo->find(7));
             }
 
             $em->flush();
-
         }
 
         return $this->render('home/home.html.twig', [
@@ -85,7 +85,7 @@ class HomeController extends AbstractController
             'trips' => $trips,
             'campus' => $campus,
             'form' => $form->createView(),
-            'closed' => $trip->getState($stateRepo->find(4))
+
 
 
         ]);

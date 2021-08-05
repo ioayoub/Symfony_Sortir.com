@@ -16,7 +16,7 @@
 				</div>
 			{% endfor %}
 
-			<h3>Filter les sorties</h3>
+			<h3>Filtrer les sorties</h3>
 			<div class="dateAndUser" style="text-align:right;">
 				<p>
 					Date du jour :
@@ -34,7 +34,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 							{{form_start(form)}}
-							<table style="width:100%">
+							<table style="width:100%" class="table table-striped">
 								<tr>
 									<td>
 										{{form_row(form.campusSearch)}}
@@ -144,7 +144,8 @@
 
 								<td style="text-align:left;">
 									<a class="btn btn-primary" href=" {{ path('trips_show', {id : trip.id} ) }} ">Afficher</a>
-									{% if trip.isOrganizer.username == app.user.username and  trip.state.id != 4 or is_granted( 'ROLE_ADMIN') %}
+
+									{% if trip.isOrganizer.username == app.user.username and trip.state.id != 4 and trip.state.id != 5 or is_granted( 'ROLE_ADMIN') %}
 										<a class="btn btn-primary" href=" {{ path('trips_edit', {id : trip.id}) }} ">Modifier</a>
 										{% if is_granted('ROLE_ADMIN') %}
 											<a class="btn btn-danger" href=" {{ path('trips_delete', {id : trip.id}) }} ">Supprimer</a>
@@ -152,22 +153,20 @@
 										{% if trip.state.id == 1 %}
 											<a class="btn btn-info" href=" {{path('trips_publish', {id: trip.id})}} ">Publier</a>
 										{% endif %}
-
 									{% endif %}
 
-									{% if trip.state.id != 1 and trip.state.id != 3 and trip.state.id != 7 and trip.isOrganizer.username != app.user.username %}
+									{% if trip.state.id != 1 and trip.state.id != 3 and trip.state.id != 5 and trip.state.id != 7 and trip.isOrganizer.username != app.user.username %}
 										{% if not trip.isRegistered %}
 											<a class="btn btn-success" href=" {{ path('trips_subscribe', {id : trip.id}) }} ">S'inscrire</a>
-										{% elseif trip.state %}
+										{% elseif date('now') > trip.getLimitRegisterDate %}
 											<a class="btn btn-warning" href=" {{ path('trips_unsubscribe', {id : trip.id}) }} ">Se désister</a>
 										{% endif %}
 									{% endif %}
 								</td>
 							</tr>
 						</tbody>
-					</td>
-				</tr>
-			</tbody>
-		{% endfor %}
-	</table>
-</div></div><a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a><br><br><br></div>{% endblock %}
+					{% endfor %}
+				</table>
+				<a class="btn btn-primary" href=" {{ path('trips_new') }} ">Créer une sortie</a><br><br><br></div>
+		</div>
+	{% endblock %}

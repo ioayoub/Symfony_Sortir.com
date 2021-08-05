@@ -93,12 +93,12 @@
 		</table>
 
 		{# <div style="text-align:center; justify-content: space-between; ">
-									<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
-									{% if trip.state.id == 1 %}
-										<a href="{{ path('trips_delete', { 'id': trip.id }) }}" class="btn btn-danger">Supprimer</a>
-									{% endif %}
-									<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-warning">Désinscription</a>
-									<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a> #}
+																							<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
+																							{% if trip.state.id == 1 %}
+																								<a href="{{ path('trips_delete', { 'id': trip.id }) }}" class="btn btn-danger">Supprimer</a>
+																							{% endif %}
+																							<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-warning">Désinscription</a>
+																							<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a> #}
 
 
 		<br><br><br><br>
@@ -116,14 +116,16 @@
 				{% for isSubscribed in isSubscribed %}
 					<tr>
 						<td>
-							{{isSubscribed.username}}
+							{{isSubscribed.username | capitalize}}
 						</td>
 						<td>
-							{{isSubscribed.firstname}}
+							{{isSubscribed.lastname | upper}}
+							{{isSubscribed.firstname | capitalize}}
 						</td>
 					</tr>
 				{% endfor %}
 			</tbody>
 		</table>
 	</div>
+	<br><br><br><br>
 {% endblock %}
