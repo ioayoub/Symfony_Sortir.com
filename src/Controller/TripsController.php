@@ -6,11 +6,12 @@ use App\Entity\User;
 use App\Entity\State;
 use App\Entity\Trips;
 use App\Form\TripsType;
-use App\Repository\TripsRepository;
-use App\Repository\CampusRepository;
+use App\Form\TripsCancelType;
 use App\Repository\CityRepository;
 use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
+use App\Repository\TripsRepository;
+use App\Repository\CampusRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -189,4 +190,30 @@ class TripsController extends AbstractController
         $this->em->flush();
         return $this->redirectToRoute('home_');
     }
+
+    /**
+     * @Route("/trips/cancel/{id}", name="trips_cancel") 
+     */
+
+    public function cancel($id, StateRepository $stateRepo, Request $request): Response
+    {
+        
+        $trip = $this->repo->find($id);
+        $form = $this->createForm(TripsCancelType::class, $trip);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+        $trip->setState($stateRepo->find(6));
+        $this->em->persist($trip);
+        $this->em->flush();
+        
+        return $this->redirectToRoute('home_');
+        }
+        return $this->render('trips/cancel.html.twig', [
+            'trip' => $trip,
+            'form' => $form->createView(),
+        ]);
+
+    }
+    
 }

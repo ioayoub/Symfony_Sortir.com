@@ -154,8 +154,10 @@
 											<a class="btn btn-info" href=" {{path('trips_publish', {id: trip.id})}} ">Publier</a>
 										{% endif %}
 									{% endif %}
-
-									{% if trip.state.id != 1 and trip.state.id != 3 and trip.state.id != 5 and trip.state.id != 7 and trip.isOrganizer.username != app.user.username %}
+									{% if trip.isOrganizer.username == app.user.username and trip.state.id == 2 and trip.isRegistered <= 0 %}
+									<a href="{{path('trips_cancel', {id: trip.id})}}" class="btn btn-dark">Annuler</a>
+									{% endif %}
+									{% if trip.state.id == 2 and trip.isOrganizer.username != app.user.username %}
 										{% if not trip.isRegistered %}
 											<a class="btn btn-success" href=" {{ path('trips_subscribe', {id : trip.id}) }} ">S'inscrire</a>
 										{% elseif date('now') > trip.getLimitRegisterDate %}

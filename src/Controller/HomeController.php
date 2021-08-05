@@ -55,11 +55,11 @@ class HomeController extends AbstractController
             $today = new \DateTime();
 
             //state 2 = Open
-            if ($today <= $trip->getLimitRegisterDate() && $trip->getNbRegistered() < $trip->getMaxRegistrations()) {
+            if ($trip->getState()->getId() != 1 && $trip->getState()->getId() != 6 && $today <= $trip->getLimitRegisterDate() && $trip->getNbRegistered() < $trip->getMaxRegistrations()) {
                 $trip->setState($stateRepo->find(2));
             }
             //State 3 = Closed
-            if ($today > $trip->getLimitRegisterDate() || $trip->getNbRegistered() == $trip->getMaxRegistrations()) {
+            if ($trip->getState()->getId() != 6 && $today > $trip->getLimitRegisterDate() || $trip->getNbRegistered() == $trip->getMaxRegistrations()) {
                 $trip->setState($stateRepo->find(3));
             }
             //State 4 = In progress

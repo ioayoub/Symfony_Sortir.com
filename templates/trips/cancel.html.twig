@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title 'Annuler une sortie'%}
+
+{% block body %}
+<style>
+* {
+    text-align: center;
+}
+</style>
+<div class="container mt-4">
+<h1>Annuler une sortie</h1>
+<table class="table mt-4">
+    <tr>
+    <td>
+    Nom de la sortie : 
+    </td>
+        <td>
+            {{trip.name}}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    Date de la sortie :
+    </td>
+        <td>
+            {{trip.dateStart | date('d/m/Y')}}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    Campus : 
+    </td>
+        <td>
+            {{trip.organizer.name}}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    Lieu :
+    </td>
+        <td>
+            {{trip.tripsPlace.name}}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    Motif : 
+    </td>
+        <td>
+        {{form_start(form)}}
+        {{form_row(form)}}
+        </td>
+    </tr>
+    <tr>
+    <td>
+    <button class="btn btn-primary">Enregister</button>
+    </td>
+        <td>
+            <a href=" {{path('home_')}} " class="btn btn-info">Retour</a>
+        </td>
+</table>
+        {{form_end(form)}}
+</div>
+
+{% endblock %}
