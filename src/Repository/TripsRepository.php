@@ -28,45 +28,58 @@ class TripsRepository extends ServiceEntityRepository
         $query = $this->createQueryBuilder('t');
 
         if ($search->getCampusSearch() != null) {
-            $query = $query->andWhere('t.organizer = :organizer');
-            $query->setParameter('organizer', $search->getCampusSearch());
+            $query =
+                $query
+                ->andWhere('t.organizer = :organizer')
+                ->setParameter('organizer', $search->getCampusSearch());
         }
 
         if ($search->getManualSearch() != null) {
-            $query = $query->andWhere('t.name = :name');
-            $query->setParameter('name', $search->getManualSearch());
+            $query =
+                $query
+                ->andWhere('t.name = :name')
+                ->setParameter('name', $search->getManualSearch());
         }
 
         if ($search->getStartDateSearch() != null) {
-            $query = $query->andWhere('t.dateStart >= :dateStart');
-            $query->setParameter('dateStart', $search->getStartDateSearch());
+            $query =
+                $query
+                ->andWhere('t.dateStart >= :dateStart')
+                ->setParameter('dateStart', $search->getStartDateSearch());
         }
 
         if ($search->getEndDateSearch() != null) {
-            $query = $query->andWhere('t.limitRegisterDate <= :limitRegisterDate');
-            $query->setParameter('limitRegisterDate', $search->getEndDateSearch());
+            $query =
+                $query
+                ->andWhere('t.limitRegisterDate <= :limitRegisterDate')
+                ->setParameter('limitRegisterDate', $search->getEndDateSearch());
         }
 
         if ($search->getIsOrganizerSearch()) {
-            $query = $query->andWhere('t.isOrganizer = :isOrganizer');
-            $query->setParameter('isOrganizer', $userId);
+            $query =
+                $query
+                ->andWhere('t.isOrganizer = :isOrganizer')
+                ->setParameter('isOrganizer', $userId);
         }
 
-        //query trip where user_id and trip_id are null from manytomany trips_user
         if ($search->getIsSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isSubscribed = :isSubscribed');
-            $query->setParameter('isSubscribed', $search->getIsSubscribedSearch());
+            $query =
+                $query
+                ->andWhere(':isSubscribed MEMBER OF t.isSubscribed')
+                ->setParameter('isSubscribed', $userId);
         }
         if ($search->getIsNotSubscribedSearch() != null) {
-            $query = $query->andWhere('t.isSubscribed IS NULL');
+            $query =
+                $query
+                ->andWhere('NOT :isNotSubscribed MEMBER OF t.isSubscribed')
+                ->setParameter('isNotSubscribed', $userId);
         }
 
         if ($search->getIsOutdatedSearch()) {
-            $query = $query->andWhere('t.state <= :state');
-            $query->setParameter('state', 5);
+            $query = $query
+                ->andWhere('t.state <= :state')
+                ->setParameter('state', 5);
         }
-
-
 
         dump($query->getQuery()->getDQL());
         return  $query->getQuery()->getResult();
