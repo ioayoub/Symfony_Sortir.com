@@ -11,14 +11,15 @@
 		<tr>
 			<td>
 				{{form_row(form.name, {'label': 'Nom de la sortie'})}}
+			
 			</td>
 			<td>
 				<label for="Campus">Campus</label>
 				<br>
 				{% if is_granted ('ROLE_ADMIN') %}
-					<select name="campus" id="Campus" style="width:100%;">
+					<select name="campus" id="Campus" style="width:100%; height : 2rem">
 						{% for campus in campus %}
-							<option value="{{ campus.name }}">{{ campus.name }}</option>
+						<option value="{{ campus.name }}">{{ campus.name }}</option>
 						{% endfor %}
 					</select>
 				{% else %}
@@ -31,31 +32,34 @@
 				{{form_row(form.dateStart, {'label': 'Date et heure de la sortie'})}}
 			</td>
 			<td>
-				<label for="ville">Ville</label>
-				<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;">
-					<option value=""></option>
-				</select>
-			</td>
+				{{form_row(form.tripsPlace, {'label': 'Lieu'})}}
+				<a href="{{path('place_new')}}" class="btn btn-success">Ajouter un lieu</a></td>
+				</td>
 		</tr>
 		<tr>
 			<td>
-				{{ form_row(form.limitRegisterDate, {'label': 'Date limite d\'inscription' }) }} </td>
+				{{ form_row(form.limitRegisterDate, {'label': 'Date limite d\'inscription' }) }} 
 			<td>
-				<label for="lieu">Lieu</label>
-					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;">
-						<option value=""></option>
-				</select>
-				</td>
+			<label for="Ville">Ville</label>
+			{% if trip.tripsPlace == null %} 
+				<input type="text" style="width:100%" value= "" disabled>
+			{% else %}
+				<input type="text" style="width:100%" value= "{{trip.tripsPlace.city.name}}" disabled>
+			{% endif %} 
+			</td>
 		</tr>
 
 		<tr>
 				<td>
-					{{form_row(form.duration, {'label': 'Durée (Minutes)'}) }}
+					{{form_row(form.duration, {label : 'Durée (Minutes)'}) }}
 				</td>
 				<td>
 					<label for="rue">Rue</label>
-					<br>
-					<input type="text" style="width: 100%" disabled>
+					{% if trip.tripsPlace == null %} 
+				<input type="text" style="width:100%" value= "" disabled>
+			{% else %}
+				<input type="text" style="width:100%" value= "{{trip.tripsPlace.street}}" disabled>
+			{% endif %} 
 				</td>
 			</tr>
 
@@ -66,8 +70,11 @@
 				</td>
 				<td>
 					<label for="code_postal">Code Postal</label>
-					<br>
-					<input type="text" style="width: 100%" disabled>
+					{% if trip.tripsPlace == null %} 
+				<input type="text" style="width:100%" value= "" disabled>
+			{% else %}
+				<input type="text" style="width:100%" value= "{{trip.tripsPlace.city.postalCode}}" disabled>
+			{% endif %} 
 				</td>
 			</tr>
 
@@ -78,11 +85,17 @@
 				</td>
 				<td>
 					<label for="latitude">Latitude</label>
-					<br>
-					<input type="text" style="width: 100%" disabled>
+					{% if trip.tripsPlace == null %} 
+				<input type="text" style="width:100%" value= "" disabled>
+			{% else %}
+				<input type="text" style="width:100%" value= "{{trip.tripsPlace.latitude}}" disabled>
+			{% endif %} 
 					<label for="Longitude">Longitude</label>
-					<br>
-					<input type="text" style="width: 100%" disabled>
+					{% if trip.tripsPlace == null %} 
+				<input type="text" style="width:100%" value= "" disabled>
+			{% else %}
+				<input type="text" style="width:100%" value= "{{trip.tripsPlace.longitude}}" disabled>
+			{% endif %} 
 				</td>
 			</tr>
 	</table>
@@ -91,16 +104,19 @@
 		<div style="text-align:center; justify-content: space-between; ">
 			<button class="btn btn-primary">Enregistrer</button>
 			{% if trip.id != null %}
+			{% if trip.state.id == 2 %}
 			<a href=" {{path('trips_publish', {id : trip.id})}} " class="btn btn-info">Publier la sortie</a>
+			{% endif %}
 			<a href="{{path('trips_delete', {id: trip.id})}}"  class="btn btn-danger">Supprimer la sortie</a>
 			{% endif %}
 			<a type="button" href="{{path('home_')}}" class="btn btn-primary">Annuler</a>
-		{{ form_end(form) }}
+		
+		
 		</div>
+		{{ form_end(form) }}
 </div>
 <br><br><br><br>
  
-		
 {% endblock %}
   
  

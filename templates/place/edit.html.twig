@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Place{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>Modifier lieu</h1>
+
+    {{ include('place/_form.html.twig', {'button_label': 'Mise à Jour'}) }}
+<br>
+    {{ include('place/_delete_form.html.twig') }}
+    <br>
+    <a href="{{ path('admin_place') }}">Retour à la liste</a>
+</div>
+
+{% endblock %}

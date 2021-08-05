@@ -11,7 +11,7 @@
 			<tr>
 				<td>
 					<label for="name">Nom de la sortie</label>
-					<input type="text" placeholder="{{ trip.name }}" disabled>
+					<input type="text" placeholder="{{ trip.name }}" style="width:100%" disabled>
 				</td>
 				<td>
 					<label for="Campus">Campus</label>
@@ -23,39 +23,37 @@
 			<tr>
 				<td>
 					<label for="name">Date et heure de la sortie</label>
-					<input type="text" placeholder="{{ trip.dateStart | format_datetime('short', locale='fr') }}" disabled>
+					<input type="text" placeholder="{{ trip.dateStart | format_datetime('short', locale='fr') }}" style="width:100%" disabled>
 				</td>
 				<td>
 					<label for="ville">Ville</label>
-					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;" disabled>
-						<option value=""></option>
+					<input type="text" placeholder="{{ trip.tripsPlace.city.name }}" style="width:100%" disabled>
+						
 					</select>
 				</td>
 			</tr>
 			<tr>
 				<td>
 					<label for="registerDate">Date limite d'inscription</label>
-					<input type="text" placeholder="{{ trip.limitRegisterDate | date('d/m/Y') }}" disabled>
+					<input type="text" placeholder="{{ trip.limitRegisterDate | date('d/m/Y') }}" style="width:100%" disabled>
 
 
 				</td>
 				<td>
 					<label for="lieu">Lieu</label>
-					<select name="" id="" style="width:100%; height:2rem; margin-top: 0.5rem;" disabled>
-						<option value=""></option>
-					</select>
+					<input type="text" placeholder= {{trip.tripsPlace.name}} style="width:100%" disabled>
 				</td>
 			</tr>
 
 			<tr>
 				<td>
 					<label for="maxRegister">Nombre de places</label>
-					<input type="text" placeholder="{{ trip.maxRegistrations }}" disabled>
+					<input type="text" placeholder="{{ trip.maxRegistrations }}" style="width:100%" disabled>
 				</td>
 				<td>
 					<label for="rue">Rue</label>
 					<br>
-					<input type="text" style="width: 100%" disabled>
+					<input type="text" placeholder= "{{ trip.tripsPlace.street }}" style="width: 100%" disabled>
 				</td>
 			</tr>
 
@@ -63,12 +61,12 @@
 			<tr>
 				<td>
 					<label for="duree">Durée (Minutes)</label>
-					<input type="text" placeholder="{{ trip.duration}}" disabled>
+					<input type="text" placeholder="{{ trip.duration}}"  style="width:100%" disabled>
 				</td>
 				<td>
 					<label for="code_postal">Code Postal</label>
 					<br>
-					<input type="text" style="width: 100%" disabled>
+					<input type="text" placeholder="{{trip.tripsPlace.city.postalCode}}"  style="width: 100%" disabled>
 				</td>
 			</tr>
 
@@ -76,15 +74,15 @@
 			<tr>
 				<td>
 					<label for="infos">Description et infos</label>
-					<input type="textarea" placeholder="{{ trip.tripInformations }}" disabled>
+					<input type="text" placeholder="{{ trip.tripInformations }}" style="width:100%; height : 6rem;" disabled>
 				</td>
 				<td>
 					<label for="latitude">Latitude</label>
 					<br>
-					<input type="text" style="width: 100%" disabled>
+					<input type="text"  placeholder= "{{trip.tripsPlace.latitude}}" style="width: 100%" disabled>
 					<label for="Longitude">Longitude</label>
 					<br>
-					<input type="text" style="width: 100%" disabled>
+					<input type="text" placeholder= "{{trip.tripsPlace.longitude}}" style="width: 100%" disabled>
 
 				</td>
 			</tr>
@@ -92,15 +90,7 @@
 
 		</table>
 
-		{# <div style="text-align:center; justify-content: space-between; ">
-																							<a type="button" href="{{path('trips_subscribe', {id : trip.id})}}" class="btn btn-success">Inscription</a>
-																							{% if trip.state.id == 1 %}
-																								<a href="{{ path('trips_delete', { 'id': trip.id }) }}" class="btn btn-danger">Supprimer</a>
-																							{% endif %}
-																							<a type="button" href="{{path('trips_unsubscribe', {id : trip.id})}}" class="btn btn-warning">Désinscription</a>
-																							<a type="button" href="{{path('home_')}}" class="btn btn-primary">Retour à l'accueil</a> #}
-
-
+	
 		<br><br><br><br>
 
 		<h4>
@@ -116,7 +106,7 @@
 				{% for isSubscribed in isSubscribed %}
 					<tr>
 						<td>
-							{{isSubscribed.username | capitalize}}
+						<b>{{isSubscribed.username | capitalize}}</b>
 						</td>
 						<td>
 							{{isSubscribed.lastname | upper}}

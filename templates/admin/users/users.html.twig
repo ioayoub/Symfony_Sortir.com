@@ -56,9 +56,9 @@
 						</td>
 
 						<td style="text-align:center; ">
-							<form method="POST" action="{{path('user_delete', {id: user.id})}}" onsubmit="Etes vous sûr de votre action?" style="display:inline-block;">
+							<form method="POST" action="{{path('user_delete', {id: user.id})}}" onsubmit="return confirm('Etes vous sûr de vouloir supprimer cet utilisateur?');" style="display:inline-block;">
 								<a class="btn btn-primary" href=" {{path('user_edit', {id: user.id})}} ">Editer</a>
-								<input type="hidden" name="_method" value="DELETE">
+								<input type="hidden" name="_method" value="DELETE" >
 								<input type="hidden" name="_token" value="{{csrf_token('delete' ~ user.id)}}">
 								<button class="btn btn-danger">Supprimer</button>
 							</form>

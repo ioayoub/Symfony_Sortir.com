@@ -58,7 +58,7 @@ class CampusController extends AbstractController
             $this->em->persist($campus);
             $this->em->flush();
 
-            return $this->redirectToRoute('campus_index', [
+            return $this->redirectToRoute('admin_campus', [
                 'form' => $form->createView(),
                 'campus' => $campus,
             ]);
@@ -83,7 +83,7 @@ class CampusController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->em->persist($campus);
             $this->em->flush();
-            return $this->redirectToRoute('campus_index', [
+            return $this->redirectToRoute('admin_campus', [
                 'form' => $form->createView(),
                 'campus' => $campus,
             ]);
@@ -104,6 +104,6 @@ class CampusController extends AbstractController
         $campus = $this->repo->find($id);
         $this->em->remove($campus);
         $this->em->flush();
-        return $this->redirectToRoute('campus_index');
+        return $this->redirectToRoute('admin_campus');
     }
 }

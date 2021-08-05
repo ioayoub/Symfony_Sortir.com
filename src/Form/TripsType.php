@@ -6,11 +6,11 @@ use App\Entity\Trips;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TripsType extends AbstractType
 {
@@ -38,18 +38,22 @@ class TripsType extends AbstractType
             ->add('maxRegistrations')
             ->add('tripInformations', TextareaType::class, [
                 'label' => 'Description'
-                // ])
-                // ->add('state', EntityType::class, [
-                //     'class' => 'App\Entity\State',
-                //     'choice_label' => 'name',
-                //     'multiple' => false,
-            ]);
-    }
+            ])
+             ->add('tripsPlace', EntityType::class, [
+                'class' => \App\Entity\Place::class,
+                'label' => 'Ville',
+                 'choice_label' => 'name'
+             ]);
+           
+      
+        }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => Trips::class,
+            
+        
         ]);
     }
 }

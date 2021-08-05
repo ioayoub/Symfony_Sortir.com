@@ -8,6 +8,8 @@ use App\Entity\Trips;
 use App\Form\TripsType;
 use App\Repository\TripsRepository;
 use App\Repository\CampusRepository;
+use App\Repository\CityRepository;
+use App\Repository\PlaceRepository;
 use App\Repository\StateRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,11 +44,12 @@ class TripsController extends AbstractController
      * @Route("/trips/new", name="trips_new")
      */
 
-    public function new(Request $request, CampusRepository $campRepo, StateRepository $stateRepo): Response
+    public function new(Request $request, CampusRepository $campRepo, StateRepository $stateRepo, PlaceRepository $placeRepo): Response
     {
         $trip = new Trips();
         $campus = $campRepo->findAll();
         $user = $this->getUser();
+        $place = $placeRepo->findAll();
 
         $form = $this->createForm(TripsType::class, $trip);
         $form->handleRequest($request);
@@ -76,6 +79,7 @@ class TripsController extends AbstractController
             'trip' => $trip,
             'user' => $user,
             'campus' => $campus,
+            'place' => $place,
         ]);
     }
 
@@ -94,11 +98,11 @@ class TripsController extends AbstractController
     /**
      * @Route("/trips/edit/{id}", name="trips_edit")
      */
-    public function edit(int $id, Request $request, CampusRepository $campRepo, StateRepository $stateRepo): Response
+    public function edit(int $id, Request $request, CampusRepository $campRepo, PlaceRepository $placeRepo): Response
     {
         $trip = $this->repo->find($id);
         $campus = $campRepo->findAll();
-
+        $place = $placeRepo->findAll();
 
 
         $form = $this->createForm(TripsType::class, $trip);
@@ -120,6 +124,7 @@ class TripsController extends AbstractController
             'trip' => $trip,
             'editMode' => $trip->getId(),
             'campus' => $campus,
+            'place' => $place,
         ]);
     }
 
