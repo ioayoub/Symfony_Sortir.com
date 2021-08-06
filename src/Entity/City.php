@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use App\Repository\CityRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\CityRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=CityRepository::class)
+ * @UniqueEntity("name", message="Cette ville existe déjà.")
  */
 class City
 {
@@ -21,11 +24,13 @@ class City
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=5)
      */
     private $postalCode;
 

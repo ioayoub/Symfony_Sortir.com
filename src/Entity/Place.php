@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\PlaceRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use App\Repository\PlaceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=PlaceRepository::class)
+ * @UniqueEntity("name", message="Ce lieu existe déjà.")
  */
 class Place
 {
@@ -21,11 +23,13 @@ class Place
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Length(min=10)
      */
     private $street;
 
